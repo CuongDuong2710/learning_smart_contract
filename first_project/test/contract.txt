@@ -1,0 +1,198 @@
+hello: Contract {
+  interface: Interface {
+    fragments: [
+      [ConstructorFragment],
+      [FunctionFragment],
+      [FunctionFragment],
+      [FunctionFragment]
+    ],
+    _abiCoder: AbiCoder { coerceFunc: null },
+    functions: {
+      'message()': [FunctionFragment],
+      'printHelloWorld()': [FunctionFragment],
+      'updateMessage(string)': [FunctionFragment]
+    },
+    errors: {},
+    events: {},
+    structs: {},
+    deploy: ConstructorFragment {
+      name: null,
+      type: 'constructor',
+      inputs: [Array],
+      payable: false,
+      stateMutability: 'nonpayable',
+      gas: null,
+      _isFragment: true
+    },
+    _isInterface: true
+  },
+  provider: EthersProviderWrapper {
+    _isProvider: true,
+    _events: [],
+    _emitted: { block: -2 },
+    formatter: Formatter { formats: [Object] },
+    anyNetwork: false,
+    _networkPromise: Promise { [Object] },
+    _maxInternalBlockNumber: 0,
+    _lastBlockNumber: -2,
+    _pollingInterval: 4000,
+    _fastQueryDate: 1646838624943,
+    connection: { url: 'http://localhost:8545' },
+    _nextId: 42,
+    _hardhatProvider: BackwardsCompatibilityProviderAdapter {
+      _wrapped: FixedGasProvider {
+        _wrapped: AutomaticSenderProvider {
+          _wrapped: [HardhatNetworkProvider],
+          _wrappedProvider: [HardhatNetworkProvider]
+        },
+        _wrappedProvider: AutomaticSenderProvider {
+          _wrapped: [HardhatNetworkProvider],
+          _wrappedProvider: [HardhatNetworkProvider]
+        },
+        _gasLimit: 30000000
+      },
+      _provider: FixedGasProvider {
+        _wrapped: AutomaticSenderProvider {
+          _wrapped: [HardhatNetworkProvider],
+          _wrappedProvider: [HardhatNetworkProvider]
+        },
+        _wrappedProvider: AutomaticSenderProvider {
+          _wrapped: [HardhatNetworkProvider],
+          _wrappedProvider: [HardhatNetworkProvider]
+        },
+        _gasLimit: 30000000
+      },
+      sendAsync: [Function: bound sendAsync],
+      send: [Function: bound send],
+      _sendJsonRpcRequest: [Function: bound _sendJsonRpcRequest] AsyncFunction
+    },
+    _eventLoopCache: { detectNetwork: [Promise] },
+    _network: { chainId: 31337, name: 'unknown' },
+    _internalBlockNumber: Promise { [Object] },
+    _fastBlockNumber: 0,
+    _fastBlockNumberPromise: Promise { 0 }
+  },
+  signer: SignerWithAddress {
+    _isSigner: true,
+    address: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+    _signer: JsonRpcSigner {
+      _isSigner: true,
+      provider: [EthersProviderWrapper],
+      _address: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+      _index: null
+    },
+    provider: EthersProviderWrapper {
+      _isProvider: true,
+      _events: [],
+      _emitted: [Object],
+      formatter: [Formatter],
+      anyNetwork: false,
+      _networkPromise: [Promise],
+      _maxInternalBlockNumber: 0,
+      _lastBlockNumber: -2,
+      _pollingInterval: 4000,
+      _fastQueryDate: 1646838624943,
+      connection: [Object],
+      _nextId: 42,
+      _hardhatProvider: BackwardsCompatibilityProviderAdapter {
+        _wrapped: FixedGasProvider {
+          _wrapped: AutomaticSenderProvider {
+            _wrapped: [HardhatNetworkProvider],
+            _wrappedProvider: [HardhatNetworkProvider]
+          },
+          _wrappedProvider: AutomaticSenderProvider {
+            _wrapped: [HardhatNetworkProvider],
+            _wrappedProvider: [HardhatNetworkProvider]
+          },
+          _gasLimit: 30000000
+        },
+        _provider: FixedGasProvider {
+          _wrapped: AutomaticSenderProvider {
+            _wrapped: [HardhatNetworkProvider],
+            _wrappedProvider: [HardhatNetworkProvider]
+          },
+          _wrappedProvider: AutomaticSenderProvider {
+            _wrapped: [HardhatNetworkProvider],
+            _wrappedProvider: [HardhatNetworkProvider]
+          },
+          _gasLimit: 30000000
+        },
+        sendAsync: [Function: bound sendAsync],
+        send: [Function: bound send],
+        _sendJsonRpcRequest: [Function: bound _sendJsonRpcRequest] AsyncFunction
+      },
+      _eventLoopCache: [Object],
+      _network: [Object],
+      _internalBlockNumber: [Promise],
+      _fastBlockNumber: 0,
+      _fastBlockNumberPromise: [Promise]
+    }
+  },
+  callStatic: {
+    'message()': [Function],
+    'printHelloWorld()': [Function],
+    'updateMessage(string)': [Function],
+    message: [Function],
+    printHelloWorld: [Function],
+    updateMessage: [Function]
+  },
+  estimateGas: {
+    'message()': [Function],
+    'printHelloWorld()': [Function],
+    'updateMessage(string)': [Function],
+    message: [Function],
+    printHelloWorld: [Function],
+    updateMessage: [Function]
+  },
+  functions: {
+    'message()': [Function],
+    'printHelloWorld()': [Function],
+    'updateMessage(string)': [Function],
+    message: [Function],
+    printHelloWorld: [Function],
+    updateMessage: [Function]
+  },
+  populateTransaction: {
+    'message()': [Function],
+    'printHelloWorld()': [Function],
+    'updateMessage(string)': [Function],
+    message: [Function],
+    printHelloWorld: [Function],
+    updateMessage: [Function]
+  },
+  filters: {},
+  _runningEvents: {},
+  _wrappedEmits: {},
+  address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  resolvedAddress: Promise { '0x5FbDB2315678afecb367f032d93F642f64180aa3' },
+  'message()': [Function],
+  'printHelloWorld()': [Function],
+  'updateMessage(string)': [Function],
+  message: [Function],
+  printHelloWorld: [Function],
+  updateMessage: [Function],
+  deployTransaction: {
+    hash: '0x4fbd7f382cef5cf4642038ad649d62fe473ce978d77e5b563f6c10efce91128d',
+    type: 2,
+    accessList: [],
+    blockHash: '0x751e39296995dcfb7bb3391e72b98ed878a62f502ead5d03e4d883dccd4da6d5',
+    blockNumber: 1,
+    transactionIndex: 0,
+    confirmations: 1,
+    from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+    gasPrice: BigNumber { value: "1875000000" },
+    maxPriorityFeePerGas: BigNumber { value: "1000000000" },
+    maxFeePerGas: BigNumber { value: "2750000000" },
+    gasLimit: BigNumber { value: "376586" },
+    to: null,
+    value: BigNumber { value: "0" },
+    nonce: 0,
+    data: '0x60806040523480156200001157600080fd5b506040516200087938038062000879833981810160405281019062000037919062000179565b80600090805190602001906200004f92919062000057565b50506200032e565b828054620000659062000253565b90600052602060002090601f016020900481019282620000895760008555620000d5565b82601f10620000a457805160ff1916838001178555620000d5565b82800160010185558215620000d5579182015b82811115620000d4578251825591602001919060010190620000b7565b5b509050620000e49190620000e8565b5090565b5b8082111562000103576000816000905550600101620000e9565b5090565b60006200011e6200011884620001e7565b620001be565b9050828152602081018484840111156200013757600080fd5b620001448482856200021d565b509392505050565b600082601f8301126200015e57600080fd5b81516200017084826020860162000107565b91505092915050565b6000602082840312156200018c57600080fd5b600082015167ffffffffffffffff811115620001a757600080fd5b620001b5848285016200014c565b91505092915050565b6000620001ca620001dd565b9050620001d8828262000289565b919050565b6000604051905090565b600067ffffffffffffffff821115620002055762000204620002ee565b5b62000210826200031d565b9050602081019050919050565b60005b838110156200023d57808201518184015260208101905062000220565b838111156200024d576000848401525b50505050565b600060028204905060018216806200026c57607f821691505b60208210811415620002835762000282620002bf565b5b50919050565b62000294826200031d565b810181811067ffffffffffffffff82111715620002b657620002b5620002ee565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6000601f19601f8301169050919050565b61053b806200033e6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80631923be241461004657806339a7aa4814610062578063e21f37ce14610080575b600080fd5b610060600480360381019061005b91906102e3565b61009e565b005b61006a6100b8565b604051610077919061035d565b60405180910390f35b61008861014a565b604051610095919061035d565b60405180910390f35b80600090805190602001906100b49291906101d8565b5050565b6060600080546100c790610433565b80601f01602080910402602001604051908101604052809291908181526020018280546100f390610433565b80156101405780601f1061011557610100808354040283529160200191610140565b820191906000526020600020905b81548152906001019060200180831161012357829003601f168201915b5050505050905090565b6000805461015790610433565b80601f016020809104026020016040519081016040528092919081815260200182805461018390610433565b80156101d05780601f106101a5576101008083540402835291602001916101d0565b820191906000526020600020905b8154815290600101906020018083116101b357829003601f168201915b505050505081565b8280546101e490610433565b90600052602060002090601f016020900481019282610206576000855561024d565b82601f1061021f57805160ff191683800117855561024d565b8280016001018555821561024d579182015b8281111561024c578251825591602001919060010190610231565b5b50905061025a919061025e565b5090565b5b8082111561027757600081600090555060010161025f565b5090565b600061028e610289846103a4565b61037f565b9050828152602081018484840111156102a657600080fd5b6102b18482856103f1565b509392505050565b600082601f8301126102ca57600080fd5b81356102da84826020860161027b565b91505092915050565b6000602082840312156102f557600080fd5b600082013567ffffffffffffffff81111561030f57600080fd5b61031b848285016102b9565b91505092915050565b600061032f826103d5565b61033981856103e0565b9350610349818560208601610400565b610352816104f4565b840191505092915050565b600060208201905081810360008301526103778184610324565b905092915050565b600061038961039a565b90506103958282610465565b919050565b6000604051905090565b600067ffffffffffffffff8211156103bf576103be6104c5565b5b6103c8826104f4565b9050602081019050919050565b600081519050919050565b600082825260208201905092915050565b82818337600083830152505050565b60005b8381101561041e578082015181840152602081019050610403565b8381111561042d576000848401525b50505050565b6000600282049050600182168061044b57607f821691505b6020821081141561045f5761045e610496565b5b50919050565b61046e826104f4565b810181811067ffffffffffffffff8211171561048d5761048c6104c5565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6000601f19601f830116905091905056fea2646970667358221220b90fae0ec8fac2a8a6842185b0cf403980d684a2b7a018bab29f557a1db6416d64736f6c634300080400330000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e48656c6c6f20576f726c64212121000000000000000000000000000000000000',
+    r: '0x8ee8edf83713b7469ecab40d8a0b526834f804da83e15bb23ded8843ec4e2184',
+    s: '0x2a9cf8d7f11d9c0b60e0e3841152fa7201e545c7d562318e83c293ffd00a7613',
+    v: 1,
+    creates: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    chainId: 31337,
+    wait: [Function]
+  }
+}
