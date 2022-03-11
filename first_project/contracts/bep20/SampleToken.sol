@@ -46,7 +46,7 @@ contract SampleToken is IERC20 {
         address recipient,
         uint256 amount
     ) public override returns (bool success) {
-        require(_balances[sender] >= amount); // address of sender not owner contract
+        require(_balances[sender] >= amount); // balances of sender not owner contract
         require(_allowance[sender][msg.sender] >= amount); // sender approve for owner contract spend money >= amount
         _balances[sender] -= amount;
         _balances[recipient] += amount;
@@ -54,15 +54,22 @@ contract SampleToken is IERC20 {
         return true;
     }
 
-    function approve(address _spender, uint256 _value)
+    function approve(address spender, uint256 amount) 
         public
         returns (bool success)
-    {}
+    {
+        // owner approve for spender to spend amount, not need require. It's from transfer() function above
+        _allowance[msg.sender][spender] = amount;
+        emit Approval(msg.sender, spender, amount);
+        return true;
+    } 
 
-    function allowance(address _owner, address _spender)
+    function allowance(address owner, address spender)
         public
         view
         override
         returns (uint256 remaining)
-    {}
+    {
+        return _allowance[owner][spender];
+    }
 }
