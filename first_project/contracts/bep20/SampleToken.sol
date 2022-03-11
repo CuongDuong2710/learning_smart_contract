@@ -16,26 +16,43 @@ contract SampleToken is IERC20 {
         _balances[msg.sender] = 1000000; // owner contract address hold total supply of token
     }
 
-    function totalSupply() public view override returns (uint256) {}
+    function totalSupply() public view override returns (uint256) {
+        return _totalSupply;
+    }
 
-    function balanceOf(address _owner)
+    function balanceOf(address account)
         public
         view
         override
         returns (uint256 balance)
-    {}
+    {
+        return _balances[account];
+    }
 
-    function transfer(address _to, uint256 _value)
+    function transfer(address recipient, uint256 amount)
         public
         override
         returns (bool success)
-    {}
+    {
+        require(_balances[msg.sender] >= amount); // balances of owner contract
+        _balances[msg.sender] -= amount;
+        _balances[recipient] += amount;
+        emit Transfer(msg.sender, recipient, amount); // fire event
+        return true;
+    }
 
     function transferFrom(
-        address _from,
-        address _to,
-        uint256 _value
-    ) public override returns (bool success) {}
+        address sender,
+        address recipient,
+        uint256 amount
+    ) public override returns (bool success) {
+        require(_balances[sender] >= amount); // address of sender not owner contract
+        require(_allowance[sender][msg.sender] >= amount); // sender approve for owner contract spend money >= amount
+        _balances[sender] -= amount;
+        _balances[recipient] += amount;
+        emit Transfer(sender, recipient, amount);
+        return true;
+    }
 
     function approve(address _spender, uint256 _value)
         public
