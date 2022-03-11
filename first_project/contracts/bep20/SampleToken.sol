@@ -5,7 +5,16 @@ pragma solidity ^0.8.4;
 import "./IERC20.sol";
 
 contract SampleToken is IERC20 {
-    constructor() {}
+    uint256 private _totalSupply;
+    // mapping[address] => _balances
+    mapping(address => uint256) private _balances;
+    // mapping[sender][spender] => _allowance
+    mapping(address => mapping(address => uint256)) private _allowance;
+
+    constructor() {
+        _totalSupply = 1000000;
+        _balances[msg.sender] = 1000000; // owner contract address hold total supply of token
+    }
 
     function totalSupply() public view override returns (uint256) {}
 
