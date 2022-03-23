@@ -56,7 +56,7 @@ contract SampleToken is IERC20 {
 
     function approve(address spender, uint256 amount) 
         public
-        returns (bool success)
+        override returns (bool success)
     {
         // owner approve for spender to spend amount, not need require. It's from transfer() function above
         _allowance[msg.sender][spender] = amount;
