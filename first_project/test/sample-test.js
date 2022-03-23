@@ -12,7 +12,7 @@ describe("Hello World", function () {
     await helloWorldContract.deployed()
     expect(await helloWorldContract.printHelloWorld()).to.be.equal(message)
 
-    await helloWorldContract.updateMessage(messageSecond)
+    await helloWorldContract.updateMessage("Bonjour World1")
     expect(await helloWorldContract.printHelloWorld()).to.be.equal(messageSecond)
   });
 });
