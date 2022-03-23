@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
+import "hardhat/console.sol";
 
 contract HelloWorld {
     string public message;
@@ -13,6 +14,7 @@ contract HelloWorld {
     }
 
     function updateMessage(string memory _newMessage) public {
+        console.log("message: ", _newMessage);
         message = _newMessage;
     }
 }
