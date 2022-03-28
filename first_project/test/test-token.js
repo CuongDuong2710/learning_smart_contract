@@ -28,10 +28,13 @@ describe("ERC-20 BEP-20 sample token", function() {
     })
     describe("transfer", function() {
         it("transfer should revert if amount exceeds balance", async function(){
-            
+            await expect(token.transfer(accountB.address, totalSupply + 1)).to.be.reverted
         })
         it("transfer should work correctly", async function(){
-            
+            let transferTx = await token.transfer(accountB.address, amount)
+            expect(await token.balanceOf(accountA.address)).to.be.equal(totalSupply - amount)
+            expect(await token.balanceOf(accountB.address)).to.be.equal(amount)
+            await expect(transferTx).to.emit(token, 'Transfer').withArgs(accountA.address, accountB.address, amount)
         })
     })
     describe("transferFrom", function() {
