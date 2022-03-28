@@ -14,16 +14,16 @@ describe("ERC-20 BEP-20 sample token", function() {
     })
     describe("common", function() {
         it("total supply should return right value", async function(){
-
+            expect(await token.totalSupply()).to.be.equal(totalSupply)
         })
         it("balance of account A should return right value", async function(){
-            
+            expect(await token.balanceOf(accountA.address)).to.be.equal(totalSupply)
         })
         it("balance of account B should return right value", async function(){
-            
+            expect(await token.balanceOf(accountB.address)).to.be.equal(0)
         })
         it("allowance of account A to account B should return right value", async function(){
-            
+            expect(await token.allowance(accountA.address, accountB.address)).to.be.equal(0)
         })
     })
     describe("transfer", function() {
