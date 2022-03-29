@@ -10,11 +10,12 @@ contract HelloWorld {
     }
 
     function printHelloWorld() public view returns (string memory) {
+        console.log("printHelloWorld: ", message);
         return message;
     }
 
     function updateMessage(string memory _newMessage) public {
-        console.log("message: ", _newMessage);
+        console.log("updateMessage: ", _newMessage);
         message = _newMessage;
     }
 }

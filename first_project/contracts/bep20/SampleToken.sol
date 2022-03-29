@@ -54,15 +54,17 @@ contract SampleToken is IERC20 {
         return true;
     }
 
-    function approve(address spender, uint256 amount) 
+    function approve(address spender, uint256 amount)
         public
-        override returns (bool success)
+        override
+        returns (bool success)
     {
+        require(spender != address(0), "ERC20: approve to the zero address");
         // owner approve for spender to spend amount, not need require. It's from transfer() function above
         _allowance[msg.sender][spender] = amount;
         emit Approval(msg.sender, spender, amount);
         return true;
-    } 
+    }
 
     function allowance(address owner, address spender)
         public
