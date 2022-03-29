@@ -36,9 +36,18 @@ contract Gold is ERC20, Pausable, AccessControl {
         address to,
         uint256 amount
     ) internal override whenNotPaused {
+        require(
+            _blackList[from] == false,
+            "God: account sender was on blacklist"
+        );
+        require(
+            _blackList[to] == false,
+            "God: account recipient was on blacklist"
+        );
         super._beforeTokenTransfer(from, to, amount);
     }
 
+    // only ADMIN ROLE has permission to add account to blacklist
     function addToBlackList(address _account)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -56,6 +65,7 @@ contract Gold is ERC20, Pausable, AccessControl {
         emit BlacklistAdded(_account);
     }
 
+    // only ADMIN ROLE has permission to remove account from blacklist
     function removeFromBlackList(address _account)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
