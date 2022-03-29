@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract Gold is ERC20, Pausable, AccessControl {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    mapping(address => bool) private _blackList;
+    event BlacklistAdded(address account);
+    event BlacklistRemoved(address account);
 
     constructor() ERC20("GOLD", "GLD") {
         // set for owner contract Admin and Pause role
@@ -34,5 +37,34 @@ contract Gold is ERC20, Pausable, AccessControl {
         uint256 amount
     ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
+    }
+
+    function addToBlackList(address _account)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        // owner can not add himself to blacklist
+        require(
+            _account != msg.sender,
+            "Gold: must not add sender to blacklist"
+        );
+        require(
+            _blackList[_account] == false,
+            "Gold: account was on blacklist"
+        );
+        _blackList[_account] = true;
+        emit BlacklistAdded(_account);
+    }
+
+    function removeFromBlackList(address _account)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        require(
+            _blackList[_account] == true,
+            "Gold: account was not on blacklist"
+        );
+        _blackList[_account] = false;
+        emit BlacklistRemoved(_account);
     }
 }
