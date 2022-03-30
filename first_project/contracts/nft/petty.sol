@@ -12,14 +12,13 @@ contract Petty is ERC721, Ownable {
 
     constructor() ERC721("Petty", "PET") {}
 
-    // only contract owner has permission to call mint() 
+    // only contract owner has permission to call mint()
     function mint(address to_) public onlyOwner returns (uint256) {
         _tokenIdCount.increment();
         uint256 tokenId = _tokenIdCount.current();
         _mint(to_, tokenId);
         return tokenId;
     }
-
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
     }
