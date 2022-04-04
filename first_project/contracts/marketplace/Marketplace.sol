@@ -25,4 +25,28 @@ contract Marketplace is Ownable {
     uint256 feeRate;
     address public feeRecipient; // address receives fee of transaction
     EnumerableSet.AddressSet private _supportedPaymentTokens;
+    
+    // add event
+    event OrderAdded (
+        uint256 indexed orderId,
+        uint256 indexed seller,
+        uint256 indexed tokenId,
+        address paymentToken,
+        uint256 price
+    );
+    event OrderCancelled (
+        uint256 indexed orderId
+    );
+    event OrderMatched (
+        uint256 indexed orderId,
+        uint256 indexed seller,
+        uint256 indexed buyer,
+        uint256 tokenId,
+        address paymentToken,
+        uint256 price
+    );
+    event FeeRateUpdated (
+        uint256 feeDecimal,
+        uint256 feeRate
+    );
 }
