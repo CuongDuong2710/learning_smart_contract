@@ -86,7 +86,28 @@ contract Marketplace is Ownable {
         emit FeeRateUpdated(feeDecimal_, feeRate_);
     }
 
-    function updateFeeRate(uint256 feeDecimal_, uint256 feeRate_) external onlyOwner {
+    function updateFeeRate(uint256 feeDecimal_, uint256 feeRate_)
+        external
+        onlyOwner
+    {
         _updateFeeRate(feeDecimal_, feeRate_);
+    }
+
+    function _calculateFee(uint256 orderId_) private view returns (uint256) {
+        Order storage _order = orders[orderId_];
+        if (feeRate == 0) {
+            return 0;
+        }
+        // 10 * 100 *10^18 / 100: feeRate is 10%, order.price is 100 * 10^18 (decimal token,) feeDecimal is 0
+        // = 0.1 * 100 * 10^18
+        return (feeRate * _order.price) / 10**(feeDecimal + 2);
+    }
+
+    function isSeller(uint256 orderId_, address seller_)
+        public
+        view
+        returns (bool)
+    {
+        return orders[orderId_].seller == seller_;
     }
 }
