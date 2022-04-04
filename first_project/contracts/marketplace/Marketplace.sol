@@ -110,4 +110,31 @@ contract Marketplace is Ownable {
     {
         return orders[orderId_].seller == seller_;
     }
+
+    function addPaymentToken(address paymentToken_) external onlyOwner {
+        require(
+            paymentToken_ != address(0),
+            "Marketplace: feeRecipient_ is zero address"
+        );
+        require(
+            _supportedPaymentTokens.add(paymentToken_),
+            "Marketplace: already supported"
+        );
+    }
+
+    function isPaymentTokenSupported(address paymentToken_)
+        public
+        view
+        returns (bool)
+    {
+        return _supportedPaymentTokens.contains(paymentToken_);
+    }
+
+    modifier onlySupportedPaymentToken(address paymentToken_) {
+        require(
+            isPaymentTokenSupported(paymentToken_),
+            "Marketplace: unsupported token"
+        );
+        _;
+    }
 }
