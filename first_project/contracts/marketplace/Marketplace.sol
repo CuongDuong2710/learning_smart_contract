@@ -29,7 +29,7 @@ contract Marketplace is Ownable {
     // add event
     event OrderAdded(
         uint256 indexed orderId,
-        uint256 indexed seller,
+        address indexed seller,
         uint256 indexed tokenId,
         address paymentToken,
         uint256 price
@@ -136,5 +136,28 @@ contract Marketplace is Ownable {
             "Marketplace: unsupported token"
         );
         _;
+    }
+
+    function addOrder(
+        uint256 tokenId_,
+        address paymentToken_,
+        uint256 price_
+    ) public onlySupportedPaymentToken(paymentToken_) {
+        uint256 _orderId = _orderIdCount.current();
+        orders[_orderId] = Order(
+            _msgSender(),
+            address(0),
+            tokenId_,
+            paymentToken_,
+            price_
+        );
+        nftContract.transferFrom(_msgSender(), address(0), tokenId_);
+        emit OrderAdded(
+            _orderId,
+            _msgSender(),
+            tokenId_,
+            paymentToken_,
+            price_
+        );
     }
 }
