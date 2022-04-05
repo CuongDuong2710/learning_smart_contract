@@ -19,7 +19,7 @@ contract Marketplace is Ownable {
         uint256 price;
     }
     Counters.Counter private _orderIdCount;
-    IERC721 public immutable nftContract; // read-only and create one time in constructor
+    IERC721 public immutable nftContract; // read-only and create one instance in constructor
     mapping(uint256 => Order) orders;
     uint256 public feeDecimal;
     uint256 public feeRate;
@@ -37,8 +37,8 @@ contract Marketplace is Ownable {
     event OrderCancelled(uint256 indexed orderId);
     event OrderMatched(
         uint256 indexed orderId,
-        uint256 indexed seller,
-        uint256 indexed buyer,
+        address indexed seller,
+        address indexed buyer,
         uint256 tokenId,
         address paymentToken,
         uint256 price
@@ -143,16 +143,18 @@ contract Marketplace is Ownable {
         address paymentToken_,
         uint256 price_
     ) public onlySupportedPaymentToken(paymentToken_) {
+        // check require supported payment token
         uint256 _orderId = _orderIdCount.current();
-        orders[_orderId] = Order(
+        orders[_orderId] = Order( // add new Order to mapping at _orderId index
             _msgSender(),
             address(0),
             tokenId_,
             paymentToken_,
             price_
         );
-        nftContract.transferFrom(_msgSender(), address(0), tokenId_);
-        emit OrderAdded(
+        _orderIdCount.increment(); // increment _orderId
+        nftContract.transferFrom(_msgSender(), address(this), tokenId_); // transfer NFT token from seller to contract's address
+        emit OrderAdded( // emit event
             _orderId,
             _msgSender(),
             tokenId_,
@@ -163,16 +165,52 @@ contract Marketplace is Ownable {
 
     function cancelOrder(uint256 orderId_) external {
         Order storage _order = orders[orderId_];
-        require(
-            _order.buyer == address(0),
-            "Marketplace: buyer must be zero"
-        );
+        require(_order.buyer == address(0), "Marketplace: buyer must be zero");
         require(
             _order.seller == _msgSender(),
             "Marketplace: seller must be owner"
         );
         uint256 _tokenId = _order.tokenId;
         delete orders[orderId_];
-        nftContract.transferFrom(address(this), _msgSender(), _tokenId);
+        nftContract.transferFrom(address(this), _msgSender(), _tokenId); // refund NFT token from contract's address to seller
+    }
+
+    function executeOrder(uint256 orderId_) external {
+        require(
+            !isSeller(orderId_, _msgSender()), // check _msgSender() is a buyer different with seller
+            "Marketplace: buyer must be different from seller"
+        );
+        require(
+            orders[orderId_].buyer == address(0),
+            "Marketplace: buyer must be zero"
+        );
+        Order storage _order = orders[orderId_];
+        _order.buyer = _msgSender(); // set buyer is _msgSender()
+        // 1. buyer send fee to nft contract
+        uint256 _feeAmount = _calculateFee(orderId_);
+        if (_feeAmount > 0) {
+            IERC20(_order.paymentToken).transferFrom(
+                _msgSender(),
+                feeRecipient,
+                _feeAmount
+            );
+        }
+        // 2. buyer send amount (order.price - feeAmout) to seller
+        IERC20(_order.paymentToken).transferFrom(
+            _msgSender(),
+            _order.seller,
+            _order.price - _feeAmount
+        );
+        // 3. transfer NFT from seller to buyer
+        // NFT is transfer from seller to contract's address - address(this) - at addOrder function
+        nftContract.transferFrom(address(this), _msgSender(), _order.tokenId);
+        emit OrderMatched(
+            orderId_,
+            _order.seller,
+            _order.buyer,
+            _order.tokenId,
+            _order.paymentToken,
+            _order.price
+        );
     }
 }
