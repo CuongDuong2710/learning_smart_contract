@@ -160,4 +160,19 @@ contract Marketplace is Ownable {
             price_
         );
     }
+
+    function cancelOrder(uint256 orderId_) external {
+        Order storage _order = orders[orderId_];
+        require(
+            _order.buyer == address(0),
+            "Marketplace: buyer must be zero"
+        );
+        require(
+            _order.seller == _msgSender(),
+            "Marketplace: seller must be owner"
+        );
+        uint256 _tokenId = _order.tokenId;
+        delete orders[orderId_];
+        nftContract.transferFrom(address(this), _msgSender(), _tokenId);
+    }
 }
