@@ -31,7 +31,7 @@ contract PettyGacha is ERC721, Ownable {
 
     struct Gacha {
         uint256 price;
-        uint8[3] rankRate;
+        uint8[3] rankRate; // tỉ lệ tương ứng random ra các rank
     }
     struct Petty {
         uint8 rank;
@@ -50,7 +50,18 @@ contract PettyGacha is ERC721, Ownable {
             price_ == _idToGacha[gachaId_].price,
             "PettyGache: price not matched"
         );
-        gold.transferFrom(_msgSender(), address(this), price_);
+        gold.transferFrom(_msgSender(), address(this), price_); // owner send price to contract's address
+
+        // increment tokenId and mint to owner
+        _tokenIdCount.increment();
+        uint256 _tokenId = _tokenIdCount.current();
+        _mint(_msgSender(), _tokenId);
+
+        // create new Petty with random rank
+        uint8 _rank = _generateRandomRankWithRatio(ranks, _idToGacha[gachaId_].rankRate);
+        _tokenIdToPetty[_tokenId] = Petty(_rank, 0); // saving new Petty
+        
+        return _tokenId;
     }
 
     // only contract owner has permission to call mint()
@@ -61,6 +72,41 @@ contract PettyGacha is ERC721, Ownable {
         return tokenId;
     }
 
+ /**
+     * @dev Lấy ngẫy nhiên một rank từ array rank truyền vào theo tỉ lệ nhất định
+     * @param rankRate_ array bao gồm các ranks
+     * @param ratios_ tỉ lệ tương ứng random ra các rank
+     */
+    function _generateRandomRankWithRatio(
+        uint8[3] memory rankRate_,
+        uint8[3] memory ratios_ //[60, 40, 0]
+    ) public view returns (uint8) {
+        uint256 rand = _randInRange(1, 100);
+        uint16 flag = 0;
+        for (uint8 i = 0; i < rankRate_.length; i++) {
+            if (rand <= ratios_[i] + flag && rand >= flag) {
+                return rankRate_[i];
+            }
+            flag = flag + ratios_[i];
+        }
+        return 0;
+    }
+
+    /**
+     * @dev Random trong khoảng min đến max
+     */
+    function _randInRange(uint256 min, uint256 max)
+        public
+        view
+        returns (uint256)
+    {
+        uint256 num = uint256(
+            keccak256(
+                abi.encodePacked(block.timestamp, block.difficulty, msg.sender)
+            )
+        ) % (max + 1 - min);
+        return num + min;
+    }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
