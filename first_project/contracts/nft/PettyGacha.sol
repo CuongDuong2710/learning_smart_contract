@@ -125,6 +125,15 @@ contract PettyGacha is ERC721, Ownable {
                 isApprovedForAll(_msgSender(), address(this)),
             "PettyGacha: The contract is unauthorized to manage this token"
         );
+        uint8 _rank = _tokenIdToPetty[tokenId1_].rank;
+        require(
+            _rank == _tokenIdToPetty[tokenId2_].rank,
+            "PettyGacha: must same rank"
+        );
+        require(
+            _rank < 3,
+            "PettyGacha: petties is at the highest rank"
+        );
 
         // set new rank
         uint8 _newRank = _tokenIdToPetty[tokenId1_].rank + 1;
