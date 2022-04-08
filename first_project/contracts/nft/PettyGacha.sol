@@ -18,15 +18,17 @@ contract PettyGacha is ERC721, Ownable {
     constructor(address goldAddress_) ERC721("Petty", "PET") {
         gold = IERC20(goldAddress_);
         _gachaIdCount.increment();
-        _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [60, 40, 0]); // 100 * 10^8 => 100 ether
+        _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [60, 40, 0]);
         _gachaIdCount.increment();
         _idToGacha[_gachaIdCount.current()] = Gacha(200 * 10**18, [30, 50, 20]);
         _gachaIdCount.increment();
-        _idToGacha[_gachaIdCount.current()] = Gacha(300 * 10**18, [40, 50, 10]);
+        _idToGacha[_gachaIdCount.current()] = Gacha(300 * 10**18, [10, 40, 50]);
         _gachaIdCount.increment();
-        _idToGacha[_gachaIdCount.current()] = Gacha(400 * 10**18, [10, 20, 70]);
+        _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [100, 0, 0]);
         _gachaIdCount.increment();
-        _idToGacha[_gachaIdCount.current()] = Gacha(500 * 10**18, [20, 40, 40]);
+        _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [0, 100, 0]);
+        _gachaIdCount.increment();
+        _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [0, 0, 100]);
     }
 
     struct Gacha {
@@ -50,7 +52,8 @@ contract PettyGacha is ERC721, Ownable {
             price_ == _idToGacha[gachaId_].price,
             "PettyGache: price not matched"
         );
-        gold.transferFrom(_msgSender(), address(this), price_); // owner send price to contract's address
+        // owner send price to contract's address
+        gold.transferFrom(_msgSender(), address(this), price_);
 
         // increment tokenId and mint to owner
         _tokenIdCount.increment();
@@ -58,9 +61,12 @@ contract PettyGacha is ERC721, Ownable {
         _mint(_msgSender(), _tokenId);
 
         // create new Petty with random rank
-        uint8 _rank = _generateRandomRankWithRatio(ranks, _idToGacha[gachaId_].rankRate);
-        _tokenIdToPetty[_tokenId] = Petty(_rank, 0); // saving new Petty
-        
+        uint8 _rank = _generateRandomRankWithRatio(
+            ranks,
+            _idToGacha[gachaId_].rankRate
+        );
+        _tokenIdToPetty[_tokenId] = Petty(_rank, 0);
+
         return _tokenId;
     }
 
@@ -72,7 +78,7 @@ contract PettyGacha is ERC721, Ownable {
         return tokenId;
     }
 
- /**
+    /**
      * @dev Lấy ngẫy nhiên một rank từ array rank truyền vào theo tỉ lệ nhất định
      * @param rankRate_ array bao gồm các ranks
      * @param ratios_ tỉ lệ tương ứng random ra các rank
@@ -106,6 +112,37 @@ contract PettyGacha is ERC721, Ownable {
             )
         ) % (max + 1 - min);
         return num + min;
+    }
+
+    function breedPetties(uint256 tokenId1_, uint256 tokenId2_) public {
+        require(
+            ownerOf(tokenId1_) == _msgSender(),
+            "PettyGacha: sender is not owner of token"
+        );
+        require(
+            (getApproved(tokenId1_) == address(this) &&
+                getApproved(tokenId2_) == address(this)) ||
+                isApprovedForAll(_msgSender(), address(this)),
+            "PettyGacha: The contract is unauthorized to manage this token"
+        );
+
+        // set new rank
+        uint8 _newRank = _tokenIdToPetty[tokenId1_].rank + 1;
+
+        // burn token & delete mapping
+        _burn(tokenId1_);
+        _burn(tokenId2_);
+        delete _tokenIdToPetty[tokenId1_];
+        delete _tokenIdToPetty[tokenId2_];
+
+        // increment tokenId and mint to owner
+        _tokenIdCount.increment();
+        uint256 _newTokenId = _tokenIdCount.current();
+        _mint(_msgSender(), _newTokenId);
+
+        // create new Petty
+        _tokenIdToPetty[_newTokenId] = Petty(_newRank, 0);
+
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
