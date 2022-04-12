@@ -6,6 +6,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+/** Practice:
+ * Đề bài: Có một số game yêu cầu thời gian breed (thời gian ấp trứng) trước khi nft mới được sinh ra.
+ * Hãy update thêm vào contract để có những chức năng sau:
+ *  - Mỗi NFT với một rank khác nhau sẽ có breeding time khác nhau
+ *  - Khi thực hiện breed, user sẽ mất một khoảng thời gian breeding time trước khi được quyền claim NFT mới
+ */
 contract PettyGacha is ERC721, Ownable {
     using Counters for Counters.Counter;
     string private _baseTokenURI;
@@ -114,6 +120,11 @@ contract PettyGacha is ERC721, Ownable {
         return num + min;
     }
 
+    /** Practice - suggestion:
+     * update hàm breed để hàm không mint Petty ngay lập tức
+     * Các thông tin của lượt breed được lưu lại với một Id để User có thể claim khi breed time kết thúc
+     * Gợi ý: Lưu breed dưới dạng mapping(tokenId => Struct)
+     */
     function breedPetties(uint256 tokenId1_, uint256 tokenId2_) public {
         require(
             ownerOf(tokenId1_) == _msgSender(),
@@ -130,10 +141,7 @@ contract PettyGacha is ERC721, Ownable {
             _rank == _tokenIdToPetty[tokenId2_].rank,
             "PettyGacha: must same rank"
         );
-        require(
-            _rank < 3,
-            "PettyGacha: petties is at the highest rank"
-        );
+        require(_rank < 3, "PettyGacha: petties is at the highest rank");
 
         // set new rank
         uint8 _newRank = _tokenIdToPetty[tokenId1_].rank + 1;
@@ -151,7 +159,16 @@ contract PettyGacha is ERC721, Ownable {
 
         // create new Petty
         _tokenIdToPetty[_newTokenId] = Petty(_newRank, 0);
+    }
 
+    /** Practice - suggestion:
+     * Hàm claimsBreedPetty phục vụ việc claim một Petty sau quá trình breed
+     * Hàm sẽ check user có đủ quyền để claim không và check Petty đã sẵn sàng để claim chưa.
+     * Sau khi check user đã sẵn sàng claim, thực hiện mint nft mới cho user với rank++
+     * Cần đảm bảo mỗi breedId chỉ được claim 1 lần
+     */
+    function claimsBreedPetty(uint256 breedId_) public {
+        
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
