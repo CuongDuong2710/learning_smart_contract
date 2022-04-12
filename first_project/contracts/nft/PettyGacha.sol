@@ -6,6 +6,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+/** Note
+ * Petty, Gacha, Breeding
+ * Random
+ */
+
 /** Practice:
  * Đề bài: Có một số game yêu cầu thời gian breed (thời gian ấp trứng) trước khi nft mới được sinh ra.
  * Hãy update thêm vào contract để có những chức năng sau:
@@ -42,7 +47,7 @@ contract PettyGacha is ERC721, Ownable {
     }
 
     struct BreedInfo {
-        uint256 startTime;
+        uint256 startTime; // current time = block.timestamp
         uint256 breedTime;
         address owner; // owner of tokenId1_ & tokenId2_
         uint256 matron; // male
@@ -193,7 +198,7 @@ contract PettyGacha is ERC721, Ownable {
      * Sau khi check user đã sẵn sàng claim, thực hiện mint nft mới cho user với rank++
      * Cần đảm bảo mỗi breedId chỉ được claim 1 lần
      */
-    function claimsBreedPetty(uint256 breedId_) public {
+    function claimsPetty(uint256 breedId_) public {
         BreedInfo memory _breedInfo = _idToBreedInfo[breedId_];
         require(
             _breedInfo.owner == _msgSender(),
@@ -201,10 +206,10 @@ contract PettyGacha is ERC721, Ownable {
         );
         require(
             _breedInfo.startTime + _breedInfo.breedTime < block.timestamp, // breedTime less than current time
-            "PettyGacha: breed time has not been exceed"
+            "PettyGacha: breed time hasn't been exceeded" // two tokens is breeding
         );
 
-        // delete indexed breedId
+        // delete indexed at breedId & return default value
         delete _idToBreedInfo[breedId_];
 
         // increment tokenId and mint to owner
