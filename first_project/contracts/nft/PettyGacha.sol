@@ -36,6 +36,9 @@ contract PettyGacha is ERC721, Ownable {
         _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [0, 100, 0]);
         _gachaIdCount.increment();
         _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [0, 0, 100]);
+        _rankToBreedTime[1] = 1 days;
+        _rankToBreedTime[2] = 2 days;
+        _rankToBreedTime[3] = 3 days;
     }
 
     struct BreedInfo {
@@ -169,7 +172,7 @@ contract PettyGacha is ERC721, Ownable {
         uint256 _breedId = _breedIdCount.current();
         _idToBreedInfo[_breedId] = BreedInfo(
             block.timestamp, // or block.number
-            _rankToBreedTime[_rank],
+            _rankToBreedTime[_rank], // other rank has other breed time
             _msgSender(),
             tokenId1_,
             tokenId2_,
@@ -190,7 +193,28 @@ contract PettyGacha is ERC721, Ownable {
      * Sau khi check user đã sẵn sàng claim, thực hiện mint nft mới cho user với rank++
      * Cần đảm bảo mỗi breedId chỉ được claim 1 lần
      */
-    function claimsBreedPetty(uint256 breedId_) public {}
+    function claimsBreedPetty(uint256 breedId_) public {
+        BreedInfo memory _breedInfo = _idToBreedInfo[breedId_];
+        require(
+            _breedInfo.owner == _msgSender(),
+            "PettyGacha: sender is not breed owner"
+        );
+        require(
+            _breedInfo.startTime + _breedInfo.breedTime < block.timestamp, // breedTime less than current time
+            "PettyGacha: breed time has not been exceed"
+        );
+
+        // delete indexed breedId
+        delete _idToBreedInfo[breedId_];
+
+        // increment tokenId and mint to owner
+        _tokenIdCount.increment();
+        uint256 _newTokenId = _tokenIdCount.current();
+        _mint(_msgSender(), _newTokenId);
+
+        // create new Petty
+        _tokenIdToPetty[_newTokenId] = Petty(_breedInfo.newRank, 0);
+    }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
