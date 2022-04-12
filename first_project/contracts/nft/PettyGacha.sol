@@ -18,6 +18,7 @@ contract PettyGacha is ERC721, Ownable {
 
     Counters.Counter private _tokenIdCount;
     Counters.Counter private _gachaIdCount;
+    Counters.Counter private _breedIdCount;
 
     IERC20 public immutable gold;
 
@@ -37,6 +38,15 @@ contract PettyGacha is ERC721, Ownable {
         _idToGacha[_gachaIdCount.current()] = Gacha(100 * 10**18, [0, 0, 100]);
     }
 
+    struct BreedInfo {
+        uint256 startTime;
+        uint256 breedTime;
+        address owner; // owner of tokenId1_ & tokenId2_
+        uint256 matron; // male
+        uint256 sire; // female
+        uint8 newRank;
+    }
+
     struct Gacha {
         uint256 price;
         uint8[3] rankRate; // tỉ lệ tương ứng random ra các rank
@@ -48,6 +58,8 @@ contract PettyGacha is ERC721, Ownable {
     uint8[3] public ranks = [1, 2, 3];
     mapping(uint256 => Gacha) public _idToGacha;
     mapping(uint256 => Petty) public _tokenIdToPetty;
+    mapping(uint256 => BreedInfo) public _idToBreedInfo;
+    mapping(uint8 => uint256) public _rankToBreedTime; // each of rank has other breed time
 
     function openGacha(uint8 gachaId_, uint256 price_)
         public
@@ -152,13 +164,24 @@ contract PettyGacha is ERC721, Ownable {
         delete _tokenIdToPetty[tokenId1_];
         delete _tokenIdToPetty[tokenId2_];
 
-        // increment tokenId and mint to owner
+        // create new BreedInfo
+        _breedIdCount.increment();
+        uint256 _breedId = _breedIdCount.current();
+        _idToBreedInfo[_breedId] = BreedInfo(
+            block.timestamp, // or block.number
+            _rankToBreedTime[_rank],
+            _msgSender(),
+            tokenId1_,
+            tokenId2_,
+            _newRank
+        );
+        /* // increment tokenId and mint to owner
         _tokenIdCount.increment();
         uint256 _newTokenId = _tokenIdCount.current();
         _mint(_msgSender(), _newTokenId);
 
         // create new Petty
-        _tokenIdToPetty[_newTokenId] = Petty(_newRank, 0);
+        _tokenIdToPetty[_newTokenId] = Petty(_newRank, 0); */
     }
 
     /** Practice - suggestion:
@@ -167,9 +190,7 @@ contract PettyGacha is ERC721, Ownable {
      * Sau khi check user đã sẵn sàng claim, thực hiện mint nft mới cho user với rank++
      * Cần đảm bảo mỗi breedId chỉ được claim 1 lần
      */
-    function claimsBreedPetty(uint256 breedId_) public {
-        
-    }
+    function claimsBreedPetty(uint256 breedId_) public {}
 
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
