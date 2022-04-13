@@ -98,8 +98,10 @@ contract Marketplace is Ownable {
         if (feeRate == 0) {
             return 0;
         }
-        // 10 * 100 *10^18 / 100: feeRate is 10%, order.price is 100 * 10^18 (decimal token,) feeDecimal is 0
-        // = 0.1 * 100 * 10^18
+        // 10 * 100 / 10^(2): feeRate is 10%, order.price is 100, feeDecimal is 0
+        // = 10
+        // 10111 * 100 / 10^(7): feeRate is 10.111%, order.price is 100, feeDecimal is 5
+        // = 0.1
         return (feeRate * _order.price) / 10**(feeDecimal + 2);
     }
 
