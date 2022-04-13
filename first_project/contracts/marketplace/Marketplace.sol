@@ -175,6 +175,7 @@ contract Marketplace is Ownable {
         uint256 _tokenId = _order.tokenId;
         delete orders[orderId_];
         nftContract.transferFrom(address(this), _msgSender(), _tokenId); // refund NFT token from contract's address to seller
+        emit OrderCancelled(orderId_);
     }
 
     function executeOrder(uint256 orderId_) external {
