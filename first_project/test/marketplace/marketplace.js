@@ -35,13 +35,12 @@ describe("marketplace", function () {
     );
     await marketplace.deployed();
     await marketplace.addPaymentToken(gold.address); // add payment token
-    await gold.transfer(seller, defaultBalance);
-    await gold.transfer(buyer, defaultBalance);
+    await gold.transfer(seller.address, defaultBalance);
+    await gold.transfer(buyer.address, defaultBalance);
   });
   describe("common", function () {
     it("feeDecimal should return correct value", async function () {
-      expect(await marketplace.feeDecimal()).to.be.equal(defaulFeeDecimal);
-    });
+      expect(await marketplace.feeDecimal()).to.be.equal(defaultFeeDecimal);
     it("feeRate should return correct value", async function () {
       expect(await marketplace.feeRate()).to.be.equal(defaultFeeRate);
     });
