@@ -41,6 +41,7 @@ describe("marketplace", function () {
   describe("common", function () {
     it("feeDecimal should return correct value", async function () {
       expect(await marketplace.feeDecimal()).to.be.equal(defaultFeeDecimal);
+    });
     it("feeRate should return correct value", async function () {
       expect(await marketplace.feeRate()).to.be.equal(defaultFeeRate);
     });
@@ -48,6 +49,22 @@ describe("marketplace", function () {
       expect(await marketplace.feeRecipient()).to.be.equal(
         feeRecipient.address
       );
+    });
+  });
+  describe("updateFeeRecipient", function () {
+    it("should revert if fee recipient is zero address", async function () {
+      await expect(marketplace.updateFeeRecipient(address0)).to.be.revertedWith(
+        "NFTMarketplace: feeRecipient_ is zero address"
+      );
+    });
+    it("should revert if sender isn't contract owner", async function () {
+      await expect(
+        marketplace.connect(buyer).updateFeeRecipient(address0)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("should update correctly", async function () {
+      await marketplace.updateFeeRecipient(buyer.address);
+      expect(await marketplace.feeRecipient()).to.be.equal(buyer.address);
     });
   });
 });
