@@ -163,7 +163,7 @@ describe("marketplace", function () {
       expect(await petty.ownerOf(2)).to.be.equal(marketplace.address); // marketplace contract is owner of token
     });
   }); */
-  describe("cancelOrder", function () {
+  /* describe("cancelOrder", function () {
     beforeEach(async () => {
       await petty.mint(seller.address);
       await petty.connect(seller).setApprovalForAll(marketplace.address, true);
@@ -188,6 +188,58 @@ describe("marketplace", function () {
       await expect(cancelTX)
         .to.be.emit(marketplace, "OrderCancelled")
         .withArgs(1);
+    });
+  }); */
+  describe("executeOrder", function () {
+    beforeEach(async () => {
+      await petty.mint(seller.address);
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      await marketplace.connect(seller).addOrder(1, gold.address, defaultPrice);
+      await gold.connect(buyer).approve(marketplace.address, defaultPrice);
+    });
+    it("should revert if sender is seller", async function () {
+      await expect(
+        marketplace.connect(seller).executeOrder(1) // seller calls function (not true)
+      ).to.be.revertedWith(
+        "NFTMarketplace: buyer must be different from seller"
+      );
+    });
+    it("should revert if order has been sold", async function () {
+      await marketplace.connect(buyer).executeOrder(1);
+      await expect(
+        marketplace.connect(buyer).executeOrder(1) // execute order one more time -> notify error buyer must be zero to execute
+      ).to.be.revertedWith("NFTMarketplace: buyer must be zero");
+    });
+    it("should revert if order has been cancel", async function () {
+      await marketplace.connect(seller).cancelOrder(1);
+      await expect(
+        marketplace.connect(buyer).executeOrder(1)
+      ).to.be.revertedWith("NFTMarketplace: order has been canceled");
+    });
+    it("should execute order correctly with default fee", async function () {
+      const executeTx = marketplace.connect(buyer).executeOrder(1);
+      await expect(executeTx).to.be.emit(marketplace, "OrderMatched").withArgs(
+        1, // orderId
+        seller.address,
+        buyer.address,
+        1, // tokenId
+        gold.address, // paymentToken
+        defaultPrice
+      );
+      // check owner of token is buyer
+      expect(await petty.ownerOf(1)).to.be.equal(buyer.address);
+      // check balance of seller is defaultBalance + defaultPrice * 90%
+      expect(await gold.balanceOf(seller.address)).to.be.equal(
+        defaultBalance.add(defaultPrice.mul(80).div(100)) // mul(80).div(100) => AssertionError: Expected "1090000000000000000000" to be equal 1080000000000000000000
+      );
+      // check balance of buyer is defaultBalance - defaultPrice
+      expect(await gold.balanceOf(buyer.address)).to.be.equal(
+        defaultBalance.sub(defaultPrice)
+      );
+      // check balance of feeRecipient is defaultPrice * 10%
+      expect(await gold.balanceOf(feeRecipient.address)).to.be.equal(
+        defaultPrice.mul(10).div(100)
+      );
     });
   });
 });
