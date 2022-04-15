@@ -151,6 +151,16 @@ describe("marketplace", function () {
         .to.be.emit(marketplace, "OrderAdded")
         .withArgs(1, seller.address, 1, gold.address, defaultPrice);
       expect(await petty.ownerOf(1)).to.be.equal(marketplace.address); // marketplace contract is owner of token
+
+      // add order 2
+      await petty.mint(seller.address);
+      const addOrderTx2 = await marketplace
+        .connect(seller)
+        .addOrder(2, gold.address, defaultPrice); // addOrder(1, gold.address, defaultPrice) -> reverted with reason string 'NFTMarketplace: sender is not owner of token'
+      await expect(addOrderTx2)
+        .to.be.emit(marketplace, "OrderAdded")
+        .withArgs(2, seller.address, 2, gold.address, defaultPrice); // withArgs(1, seller.address...) -> AssertionError: Expected "2" to be equal 1
+      expect(await petty.ownerOf(2)).to.be.equal(marketplace.address); // marketplace contract is owner of token
     });
   });
 });
