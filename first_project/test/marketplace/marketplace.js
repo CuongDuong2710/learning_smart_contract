@@ -111,7 +111,7 @@ describe("marketplace", function () {
       ).to.be.equal(true);
     });
   }); */
-  describe("addOrder", function () {
+  /* describe("addOrder", function () {
     beforeEach(async () => {
       await petty.mint(seller.address);
     });
@@ -161,6 +161,33 @@ describe("marketplace", function () {
         .to.be.emit(marketplace, "OrderAdded")
         .withArgs(2, seller.address, 2, gold.address, defaultPrice); // withArgs(1, seller.address...) -> AssertionError: Expected "2" to be equal 1
       expect(await petty.ownerOf(2)).to.be.equal(marketplace.address); // marketplace contract is owner of token
+    });
+  }); */
+  describe("cancelOrder", function () {
+    beforeEach(async () => {
+      await petty.mint(seller.address);
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      await marketplace.connect(seller).addOrder(1, gold.address, defaultPrice);
+    });
+    it("shoule revert if order has been sold", async function () {
+      // buyer aprove marketplace contract spends gold token
+      await gold.connect(buyer).approve(marketplace.address, defaultPrice);
+      // execute order
+      await marketplace.connect(buyer).executeOrder(1);
+      await expect(
+        marketplace.connect(seller).cancelOrder(1)
+      ).to.be.revertedWith("NFTMarketplace: buyer must be zero"); // buyer is buyer.address not address(0)
+    });
+    it("should revert if sender is not order owner", async function () {
+      await expect(
+        marketplace.connect(buyer).cancelOrder(1)
+      ).to.be.revertedWith("NFTMarketplace: seller must be owner");
+    });
+    it("should cancel order correctly", async function () {
+      const cancelTX = await marketplace.connect(seller).cancelOrder(1);
+      await expect(cancelTX)
+        .to.be.emit(marketplace, "OrderCancelled")
+        .withArgs(1);
     });
   });
 });
