@@ -150,6 +150,7 @@ describe("marketplace", function () {
       await expect(addOrderTx)
         .to.be.emit(marketplace, "OrderAdded")
         .withArgs(1, seller.address, 1, gold.address, defaultPrice);
+      expect(await petty.ownerOf(1)).to.be.equal(marketplace.address); // marketplace contract is owner of token
     });
   });
 });
