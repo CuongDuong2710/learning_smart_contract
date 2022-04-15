@@ -38,7 +38,7 @@ describe("marketplace", function () {
     await gold.transfer(seller.address, defaultBalance);
     await gold.transfer(buyer.address, defaultBalance);
   });
-  describe("common", function () {
+  /* describe("common", function () {
     it("feeDecimal should return correct value", async function () {
       expect(await marketplace.feeDecimal()).to.be.equal(defaultFeeDecimal);
     });
@@ -50,8 +50,8 @@ describe("marketplace", function () {
         feeRecipient.address
       );
     });
-  });
-  describe("updateFeeRecipient", function () {
+  }); */
+  /* describe("updateFeeRecipient", function () {
     it("should revert if fee recipient is zero address", async function () {
       await expect(marketplace.updateFeeRecipient(address0)).to.be.revertedWith(
         "NFTMarketplace: feeRecipient_ is zero address"
@@ -65,6 +65,52 @@ describe("marketplace", function () {
     it("should update correctly", async function () {
       await marketplace.updateFeeRecipient(buyer.address);
       expect(await marketplace.feeRecipient()).to.be.equal(buyer.address);
+    });
+  }); */
+  /* describe("updateFeeRate", function () {
+    it("should revert if fee rate >= 10**(feeDecimal_ + 2)", async function () {
+      await expect(marketplace.updateFeeRate(0, 100)).to.be.revertedWith(
+        "NFTMarketplace: bad fee rate"
+      );
+    });
+    it("should revert if sender isn't contract owner", async function () {
+      await expect(
+        marketplace.connect(buyer).updateFeeRate(0, 10)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("should update correctly", async function () {
+      const updateFeeRateTx = await marketplace.updateFeeRate(0, 20);
+      expect(await marketplace.feeDecimal()).to.be.equal(0);
+      expect(await marketplace.feeRate()).to.be.equal(20);
+      await expect(updateFeeRateTx)
+        .to.be.emit(marketplace, "FeeRateUpdated")
+        .withArgs(0, 20);
+    });
+  }); */
+  describe("addPaymentToken", async function () {
+    it("should revert paymentToken is address 0", async function () {
+      await expect(marketplace.addPaymentToken(address0)).to.be.revertedWith(
+        "NFTMarketplace: feeRecipient_ is zero address"
+      );
+    });
+    it("should revert if address is already supported", async function () {
+      await marketplace.addPaymentToken(samplePaymentToken.address);
+      await expect(
+        marketplace.addPaymentToken(samplePaymentToken.address)
+      ).to.be.revertedWith("NFTMarketplace: already supported");
+    });
+    it("should revert if sender is not contract owner", async function () {
+      await expect(
+        marketplace.connect(buyer).addPaymentToken(samplePaymentToken.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("should add payment token correctly", async function () {
+      await marketplace.addPaymentToken(samplePaymentToken.address);
+      expect(
+        await marketplace.isPaymentTokenSupported(
+          samplePaymentToken.address
+        )
+      ).to.be.equal(true);
     });
   });
 });
