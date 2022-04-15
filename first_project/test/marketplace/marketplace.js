@@ -197,26 +197,26 @@ describe("marketplace", function () {
       await marketplace.connect(seller).addOrder(1, gold.address, defaultPrice);
       await gold.connect(buyer).approve(marketplace.address, defaultPrice);
     });
-    it("should revert if sender is seller", async function () {
+    /* it("should revert if sender is seller", async function () {
       await expect(
         marketplace.connect(seller).executeOrder(1) // seller calls function (not true)
       ).to.be.revertedWith(
         "NFTMarketplace: buyer must be different from seller"
       );
-    });
-    it("should revert if order has been sold", async function () {
+    }); */
+    /* it("should revert if order has been sold", async function () {
       await marketplace.connect(buyer).executeOrder(1);
       await expect(
         marketplace.connect(buyer).executeOrder(1) // execute order one more time -> notify error buyer must be zero to execute
       ).to.be.revertedWith("NFTMarketplace: buyer must be zero");
-    });
-    it("should revert if order has been cancel", async function () {
+    }); */
+    /* it("should revert if order has been cancel", async function () {
       await marketplace.connect(seller).cancelOrder(1);
       await expect(
         marketplace.connect(buyer).executeOrder(1)
       ).to.be.revertedWith("NFTMarketplace: order has been canceled");
-    });
-    it("should execute order correctly with default fee", async function () {
+    }); */
+    /* it("should execute order correctly with default fee", async function () {
       const executeTx = marketplace.connect(buyer).executeOrder(1);
       await expect(executeTx).to.be.emit(marketplace, "OrderMatched").withArgs(
         1, // orderId
@@ -230,7 +230,7 @@ describe("marketplace", function () {
       expect(await petty.ownerOf(1)).to.be.equal(buyer.address);
       // check balance of seller is defaultBalance + defaultPrice * 90%
       expect(await gold.balanceOf(seller.address)).to.be.equal(
-        defaultBalance.add(defaultPrice.mul(80).div(100)) // mul(80).div(100) => AssertionError: Expected "1090000000000000000000" to be equal 1080000000000000000000
+        defaultBalance.add(defaultPrice.mul(90).div(100)) // mul(80).div(100) => AssertionError: Expected "1090000000000000000000" to be equal 1080000000000000000000
       );
       // check balance of buyer is defaultBalance - defaultPrice
       expect(await gold.balanceOf(buyer.address)).to.be.equal(
@@ -239,6 +239,82 @@ describe("marketplace", function () {
       // check balance of feeRecipient is defaultPrice * 10%
       expect(await gold.balanceOf(feeRecipient.address)).to.be.equal(
         defaultPrice.mul(10).div(100)
+      );
+    }); */
+    it("should execute order correctly with 0 fee", async function () {
+      await marketplace.updateFeeRate(0, 0);
+      const executeTx = marketplace.connect(buyer).executeOrder(1);
+      await expect(executeTx).to.be.emit(marketplace, "OrderMatched").withArgs(
+        1, // orderId
+        seller.address,
+        buyer.address,
+        1, // tokenId
+        gold.address, // paymentToken
+        defaultPrice
+      );
+      // check owner of token is buyer
+      expect(await petty.ownerOf(1)).to.be.equal(buyer.address);
+      // check balance of seller is defaultBalance + defaultPrice * 90%
+      expect(await gold.balanceOf(seller.address)).to.be.equal(
+        defaultBalance.add(defaultPrice)
+      );
+      // check balance of buyer is defaultBalance - defaultPrice
+      expect(await gold.balanceOf(buyer.address)).to.be.equal(
+        defaultBalance.sub(defaultPrice)
+      );
+      // check balance of feeRecipient is defaultPrice * 10%
+      expect(await gold.balanceOf(feeRecipient.address)).to.be.equal(0);
+    });
+    it("should execute order correctly with fee 1 = 99%", async function () {
+      await marketplace.updateFeeRate(0, 99);
+      const executeTx = marketplace.connect(buyer).executeOrder(1);
+      await expect(executeTx).to.be.emit(marketplace, "OrderMatched").withArgs(
+        1, // orderId
+        seller.address,
+        buyer.address,
+        1, // tokenId
+        gold.address, // paymentToken
+        defaultPrice
+      );
+      // check owner of token is buyer
+      expect(await petty.ownerOf(1)).to.be.equal(buyer.address);
+      // check balance of seller is defaultBalance + defaultPrice * 1%
+      expect(await gold.balanceOf(seller.address)).to.be.equal(
+        defaultBalance.add(defaultPrice.mul(1).div(100))
+      );
+      // check balance of buyer is defaultBalance - defaultPrice
+      expect(await gold.balanceOf(buyer.address)).to.be.equal(
+        defaultBalance.sub(defaultPrice)
+      );
+      // check balance of feeRecipient is defaultPrice * 99%
+      expect(await gold.balanceOf(feeRecipient.address)).to.be.equal(
+        defaultPrice.mul(99).div(100)
+      );
+    });
+    it("should execute order correctly with fee 1 = 10.11111%", async function () {
+      await marketplace.updateFeeRate(5, 1011111);
+      const executeTx = marketplace.connect(buyer).executeOrder(1);
+      await expect(executeTx).to.be.emit(marketplace, "OrderMatched").withArgs(
+        1, // orderId
+        seller.address,
+        buyer.address,
+        1, // tokenId
+        gold.address, // paymentToken
+        defaultPrice
+      );
+      // check owner of token is buyer
+      expect(await petty.ownerOf(1)).to.be.equal(buyer.address);
+      // check balance of seller is defaultBalance + defaultPrice * 89.88889%
+      expect(await gold.balanceOf(seller.address)).to.be.equal(
+        defaultBalance.add(defaultPrice.mul(8988889).div(10000000))
+      );
+      // check balance of buyer is defaultBalance - defaultPrice
+      expect(await gold.balanceOf(buyer.address)).to.be.equal(
+        defaultBalance.sub(defaultPrice)
+      );
+      // check balance of feeRecipient is defaultPrice * 10.11111%
+      expect(await gold.balanceOf(feeRecipient.address)).to.be.equal(
+        defaultPrice.mul(1011111).div(10000000)
       );
     });
   });
