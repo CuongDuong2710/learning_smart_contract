@@ -87,7 +87,7 @@ describe("marketplace", function () {
         .withArgs(0, 20);
     });
   }); */
-  describe("addPaymentToken", async function () {
+  /* describe("addPaymentToken", async function () {
     it("should revert paymentToken is address 0", async function () {
       await expect(marketplace.addPaymentToken(address0)).to.be.revertedWith(
         "NFTMarketplace: feeRecipient_ is zero address"
@@ -107,10 +107,49 @@ describe("marketplace", function () {
     it("should add payment token correctly", async function () {
       await marketplace.addPaymentToken(samplePaymentToken.address);
       expect(
-        await marketplace.isPaymentTokenSupported(
-          samplePaymentToken.address
-        )
+        await marketplace.isPaymentTokenSupported(samplePaymentToken.address)
       ).to.be.equal(true);
+    });
+  }); */
+  describe("addOrder", function () {
+    beforeEach(async () => {
+      await petty.mint(seller.address);
+    });
+    it("should revert if payment token not supported", async function () {
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      await expect(
+        marketplace
+          .connect(seller)
+          .addOrder(1, samplePaymentToken.address, defaultPrice) // only add gold address at beforeEach above
+      ).to.be.revertedWith("NFTMarketplace: unsupported token");
+    });
+    it("should revert if sender is not owner", async function () {
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      await expect(
+        marketplace.connect(buyer).addOrder(1, gold.address, defaultPrice)
+      ).to.be.revertedWith("NFTMarketplace: sender is not owner of token");
+    });
+    it("should revert if nft hasn't been approve for marketplace contract", async function () {
+      await expect(
+        marketplace.connect(seller).addOrder(1, gold.address, defaultPrice)
+      ).to.be.revertedWith(
+        "NFTMarketplace: The contract is unauthorized to manage this token"
+      );
+    });
+    it("should revert if price = 0", async function () {
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      await expect(
+        marketplace.connect(seller).addOrder(1, gold.address, 0)
+      ).to.be.revertedWith("NFTMarketplace: price must be greater than 0");
+    });
+    it("should add order correctly", async function () {
+      await petty.connect(seller).setApprovalForAll(marketplace.address, true);
+      const addOrderTx = await marketplace
+        .connect(seller)
+        .addOrder(1, gold.address, defaultPrice);
+      await expect(addOrderTx)
+        .to.be.emit(marketplace, "OrderAdded")
+        .withArgs(1, seller.address, 1, gold.address, defaultPrice);
     });
   });
 });
