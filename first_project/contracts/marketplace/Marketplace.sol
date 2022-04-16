@@ -175,6 +175,7 @@ contract Marketplace is Ownable {
         );
     }
 
+    // seller calls this function not buyer
     function cancelOrder(uint256 orderId_) external {
         Order storage _order = orders[orderId_];
         require(
@@ -191,6 +192,7 @@ contract Marketplace is Ownable {
         emit OrderCancelled(orderId_);
     }
 
+    // buyer calls this function not seller => _msgSender() is buyer
     function executeOrder(uint256 orderId_) external {
         Order storage _order = orders[orderId_];
         require(
@@ -208,7 +210,7 @@ contract Marketplace is Ownable {
         // 1. buyer send fee to nft contract
         uint256 _feeAmount = _calculateFee(orderId_);
         if (_feeAmount > 0) {
-            IERC20(_order.paymentToken).transferFrom(
+            IERC20(_order.paymentToken).transferFrom( // marketplace execute transferFrom()
                 _msgSender(),
                 feeRecipient,
                 _feeAmount
