@@ -819,3 +819,7 @@ Promise {
 > var balanceETH = await web3.utils.fromWei(balance, 'ether')
 > balanceETH
 '0.15332957'
+> web3.eth.accounts.create()
+> var web3Local = new Web3('http://127.0.0.1:8545/') // run terminal 'npx hardhad node' get url localhost
+> await web3Local.eth.getBalance('0xf39fd6e51aad88f6f4ce6ab8827279c') // account0
+'10000000000000000000000'
