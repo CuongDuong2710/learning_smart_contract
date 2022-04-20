@@ -1,11 +1,76 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
+import Web3Modal from "web3modal";
+import { providers, Contract } from "ethers";
 
 export default function Home() {
+  // walletConnected keep track of whether the user's wallet is connected or not
+  const [walletConnected, setWalletConected] = useState(false);
   // numberOfWhitelisted tracks the number of addresses's whitelisted
   const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
+  // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
+  const web3ModelRef = useRef();
+
+  /**
+   * Returns a Provider or Signer object representing the Ethereum RPC with or without the
+   * signing capabilities of metamask attached
+   *
+   * A `Provider` is needed to interact with the blockchain - reading transactions, reading balances, reading state, etc.
+   *
+   * A `Signer` is a special type of Provider used in case a `write` transaction needs to be made to the blockchain, which involves the connected account
+   * needing to make a digital signature to authorize the transaction being sent. Metamask exposes a Signer API to allow your website to
+   * request signatures from the user using Signer functions.
+   *
+   * @param {*} needSigner - True if you need the signer, default false otherwise
+   */
+  const getProviderOrSigner = async (needSigner = false) => {
+    const provider = await web3ModelRef.current.connect();
+    const web3Provider = new providers.Web3Provider(provider);
+
+    const { chainId } = await web3Provider.getNetwork();
+    if (chainId != 4) {
+      window.alert("Change the network to Rinkeby");
+      throw new Error("Change the network to Rinkeby");
+    }
+
+    if (needSigner) {
+      const signer = web3Provider.getSigner();
+      return signer;
+    }
+    return web3Provider;
+  };
+
+  const connectWallet = async () => {
+    try {
+      // Get the provider from web3Modal, which in our case is MetaMask
+      // When used for the first time, it prompts the user to connect their wallet
+      await getProviderOrSigner();
+      setWalletConected(true);
+
+      checkIfAddressInWhiteList();
+      getNumberOfWhiteListed();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // useEffects are used to react to changes in state of the website
+  // The array at the end of function call represents what state changes will trigger this effect
+  // In this case, whenever the value of `walletConnected` changes - this effect will be called
+  // useEffect also called when first loading page or refresh page
+  useEffect(() => {
+    if (!walletConnected) {
+      web3ModelRef.current = new Web3Modal({
+        network: "rinkeby",
+        providerOptions: {},
+        disableInjectedProvider: false,
+      });
+      connectWallet();
+    }
+  }, [walletConnected]);
+
   return (
     <div>
       <Head>
