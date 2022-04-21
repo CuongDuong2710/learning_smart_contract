@@ -16,7 +16,7 @@ export default function Home() {
   // numberOfWhitelisted tracks the number of addresses's whitelisted
   const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
-  const web3ModelRef = useRef();
+  const web3ModalRef = useRef();
 
   /**
    * Returns a Provider or Signer object representing the Ethereum RPC with or without the
@@ -33,7 +33,7 @@ export default function Home() {
   const getProviderOrSigner = async (needSigner = false) => {
     // Connect to Metamask
     // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying objectÍ
-    const provider = await web3ModelRef.current.connect();
+    const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
     const { chainId } = await web3Provider.getNetwork();
@@ -50,8 +50,28 @@ export default function Home() {
   };
 
   const addAddressToWhiteList = async () => {
-    
-  }
+    try {
+      // We need a Signer here since this is a 'write' transaction.
+      const signer = await getProviderOrSigner(true);
+      // Create a new instance of the Contract with a Signer, which allows
+      // update methods
+      const whiteListContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const tx = await whiteListContract.addAddressToWhiteList();
+      setLoading(true);
+      // wait for the transaction to get mined
+      await tx.wait();
+      setLoading(false);
+      // get the updated number of addresses in the whitelist
+      await getNumberOfWhitelisted();
+      setJoinedWhitelist(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getNumberOfWhitelisted = async () => {
     try {
@@ -61,7 +81,7 @@ export default function Home() {
       const whiteListContract = new Contract(
         WHITELIST_CONTRACT_ADDRESS,
         abi,
-        signer
+        provider
       );
       const _numberOfWhitelisted =
         await whiteListContract.numAddressWhiteListed();
@@ -137,7 +157,7 @@ export default function Home() {
   // useEffect also called when first loading page or refresh page
   useEffect(() => {
     if (!walletConnected) {
-      web3ModelRef.current = new Web3Modal({
+      web3ModalRef.current = new Web3Modal({
         network: "rinkeby",
         providerOptions: {},
         disableInjectedProvider: false,
