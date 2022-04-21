@@ -18,7 +18,7 @@ async function main() {
     "Whitelist Contract Address: ",
     deployedWhitelistContract.address
   );
-  // Whitelist Contract Address:  0xA935B95D56Ab08684696c802Fc314BD6CB174103
+  // Whitelist Contract Address:  0x596546ec0aeAd952CFca68B54Fc184e945082C95
 }
 
 main()

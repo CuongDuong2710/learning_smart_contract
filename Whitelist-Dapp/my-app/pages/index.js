@@ -49,8 +49,8 @@ export default function Home() {
     return web3Provider;
   };
 
-  const addAddressToWhiteList = async () => {
-    console.log(">>> addAddressToWhiteList");
+  const addAddressToWhitelist = async () => {
+    console.log(">>> addAddressToWhitelist");
     try {
       // We need a Signer here since this is a 'write' transaction.
       const signer = await getProviderOrSigner(true);
@@ -63,7 +63,7 @@ export default function Home() {
         signer
       );
       console.log("whiteListContract: ", whiteListContract);
-      const tx = await whiteListContract.addAddressToWhiteList();
+      const tx = await whiteListContract.addAddressToWhitelist();
       setLoading(true);
       // wait for the transaction to get mined
       await tx.wait();
@@ -87,7 +87,7 @@ export default function Home() {
         provider
       );
       const _numberOfWhitelisted =
-        await whiteListContract.numAddressWhiteListed();
+        await whiteListContract.numAddressesWhitelisted();
       setNumberOfWhitelisted(_numberOfWhitelisted);
     } catch (error) {
       console.error(error);
@@ -138,7 +138,7 @@ export default function Home() {
         return <button className={styles.button}>Loading...</button>;
       } else {
         return (
-          <button onClick={addAddressToWhiteList} className={styles.button}>
+          <button onClick={addAddressToWhitelist} className={styles.button}>
             Join the Whitelist
           </button>
         );
