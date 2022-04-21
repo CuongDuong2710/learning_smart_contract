@@ -4,10 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
+import { abi, WHITELIST_CONTRACT_ADDRESS } from "../constant";
 
 export default function Home() {
   // walletConnected keep track of whether the user's wallet is connected or not
   const [walletConnected, setWalletConected] = useState(false);
+  // joinedWhitelist keeps track of whether the current metamask address has joined the Whitelist or not
+  const [joinedWhitelist, setJoinedWhitelist] = useState(false);
+  // loading is set to true when we are waiting for a transaction to get mined
+  const [loading, setLoading] = useState(false);
   // numberOfWhitelisted tracks the number of addresses's whitelisted
   const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
@@ -26,6 +31,8 @@ export default function Home() {
    * @param {*} needSigner - True if you need the signer, default false otherwise
    */
   const getProviderOrSigner = async (needSigner = false) => {
+    // Connect to Metamask
+    // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying objectÍ
     const provider = await web3ModelRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
@@ -40,6 +47,22 @@ export default function Home() {
       return signer;
     }
     return web3Provider;
+  };
+
+  const checkIfAddressInWhiteList = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const whiteListContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const address = signer.getAddress();
+      const _joinWhiteList = whiteListContract.whitelistedAddress(address); // _joinWhiteList is boolean
+      setJoinedWhitelist[_joinWhiteList]; // _joinWhiteList keeps track whether address is joined or not whitelist
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const connectWallet = async () => {
