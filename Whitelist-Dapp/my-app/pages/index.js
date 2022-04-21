@@ -49,7 +49,29 @@ export default function Home() {
     return web3Provider;
   };
 
-  const checkIfAddressInWhiteList = async () => {
+  const addAddressToWhiteList = async () => {
+    
+  }
+
+  const getNumberOfWhitelisted = async () => {
+    try {
+      // Get the provider from web3Modal, which in our case is MetaMask
+      // No need for the Signer here, as we are only reading state from the blockchain
+      const provider = await getProviderOrSigner();
+      const whiteListContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const _numberOfWhitelisted =
+        await whiteListContract.numAddressWhiteListed();
+      setNumberOfWhitelisted[_numberOfWhitelisted];
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkIfAddressInWhitelist = async () => {
     try {
       const signer = await getProviderOrSigner(true);
       const whiteListContract = new Contract(
@@ -58,7 +80,9 @@ export default function Home() {
         signer
       );
       const address = signer.getAddress();
-      const _joinWhiteList = whiteListContract.whitelistedAddress(address); // _joinWhiteList is boolean
+      const _joinWhiteList = await whiteListContract.whitelistedAddress(
+        address
+      ); // _joinWhiteList is boolean
       setJoinedWhitelist[_joinWhiteList]; // _joinWhiteList keeps track whether address is joined or not whitelist
     } catch (error) {
       console.log(error);
@@ -72,10 +96,38 @@ export default function Home() {
       await getProviderOrSigner();
       setWalletConected(true);
 
-      checkIfAddressInWhiteList();
-      getNumberOfWhiteListed();
+      checkIfAddressInWhitelist();
+      getNumberOfWhitelisted();
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const renderButton = () => {
+    if (walletConnected) {
+      if (joinedWhitelist) {
+        return (
+          <div className={styles.description}>
+            Thanks for joining Whitelist!
+          </div>
+        );
+      } else if (loading) {
+        return <button style={styles.button}>Loading...</button>;
+      } else {
+        // not join whitelist
+        return (
+          <button onClick={addAddressToWhiteList} className={styles.button}>
+            Join the Whitelist
+          </button>
+        );
+      }
+    } else {
+      // not connect wallet
+      return (
+        <button onClick={connectWallet} className={styles.button}>
+          Connect your wallet
+        </button>
+      );
     }
   };
 
@@ -110,6 +162,7 @@ export default function Home() {
           <div className={styles.description}>
             {numberOfWhitelisted} have already joined WhiteList.
           </div>
+          {renderButton()}
         </div>
         <div>
           <img className={styles.image} src="./crypto-devs.svg" />
