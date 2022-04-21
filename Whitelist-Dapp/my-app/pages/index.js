@@ -50,9 +50,11 @@ export default function Home() {
   };
 
   const addAddressToWhiteList = async () => {
+    console.log(">>> addAddressToWhiteList");
     try {
       // We need a Signer here since this is a 'write' transaction.
       const signer = await getProviderOrSigner(true);
+      console.log("signer: ", signer);
       // Create a new instance of the Contract with a Signer, which allows
       // update methods
       const whiteListContract = new Contract(
@@ -60,6 +62,7 @@ export default function Home() {
         abi,
         signer
       );
+      console.log("whiteListContract: ", whiteListContract);
       const tx = await whiteListContract.addAddressToWhiteList();
       setLoading(true);
       // wait for the transaction to get mined
@@ -128,13 +131,12 @@ export default function Home() {
       if (joinedWhitelist) {
         return (
           <div className={styles.description}>
-            Thanks for joining Whitelist!
+            Thanks for joining the Whitelist!
           </div>
         );
       } else if (loading) {
-        return <button style={styles.button}>Loading...</button>;
+        return <button className={styles.button}>Loading...</button>;
       } else {
-        // not join whitelist
         return (
           <button onClick={addAddressToWhiteList} className={styles.button}>
             Join the Whitelist
@@ -142,7 +144,6 @@ export default function Home() {
         );
       }
     } else {
-      // not connect wallet
       return (
         <button onClick={connectWallet} className={styles.button}>
           Connect your wallet
@@ -156,6 +157,7 @@ export default function Home() {
   // In this case, whenever the value of `walletConnected` changes - this effect will be called
   // useEffect also called when first loading page or refresh page
   useEffect(() => {
+    console.log(">>> useEffect");
     if (!walletConnected) {
       web3ModalRef.current = new Web3Modal({
         network: "rinkeby",
