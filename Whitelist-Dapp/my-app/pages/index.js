@@ -37,7 +37,7 @@ export default function Home() {
     const web3Provider = new providers.Web3Provider(provider);
 
     const { chainId } = await web3Provider.getNetwork();
-    if (chainId != 4) {
+    if (chainId !== 4) {
       window.alert("Change the network to Rinkeby");
       throw new Error("Change the network to Rinkeby");
     }
@@ -69,7 +69,7 @@ export default function Home() {
       await getNumberOfWhitelisted();
       setJoinedWhitelist(true);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -85,9 +85,9 @@ export default function Home() {
       );
       const _numberOfWhitelisted =
         await whiteListContract.numAddressWhiteListed();
-      setNumberOfWhitelisted[_numberOfWhitelisted];
+      setNumberOfWhitelisted(_numberOfWhitelisted);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -103,9 +103,9 @@ export default function Home() {
       const _joinWhiteList = await whiteListContract.whitelistedAddress(
         address
       ); // _joinWhiteList is boolean
-      setJoinedWhitelist[_joinWhiteList]; // _joinWhiteList keeps track whether address is joined or not whitelist
+      setJoinedWhitelist(_joinWhiteList); // _joinWhiteList keeps track whether address is joined or not whitelist
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -119,7 +119,7 @@ export default function Home() {
       checkIfAddressInWhitelist();
       getNumberOfWhitelisted();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
