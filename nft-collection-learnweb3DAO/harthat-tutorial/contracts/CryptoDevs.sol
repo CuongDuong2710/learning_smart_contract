@@ -80,4 +80,47 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
         // If the address being minted to is not a contract, it works the same way as _mint
         _safeMint(msg.sender, tokenIds);
     }
+
+    /**
+     * @dev mint allows a user to mint 1 NFT per transaction after the presale has ended.
+     */
+    function mint() public payable onlyWhenNotPaused {
+        require(
+            presaleStarted && block.timestamp >= presaleEnded,
+            "Presale has not ended yet"
+        );
+        require(tokenIds < maxTokenIds, "Exceeded maximum Crypto Devs supply");
+        require(msg.value >= _price, "Ether sent is not correct");
+        tokenIds += 1;
+        _safeMint(msg.sender, tokenIds);
+    }
+
+    /**
+     * @dev _baseURI overides the Openzeppelin's ERC721 implementation which by default
+     * returned an empty string for the baseURI
+     */
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _baseTokenURI;
+    }
+
+    function setPause(bool val) public onlyOwner {
+        _paused = val;
+    }
+
+    /**
+     * @dev withdraw sends all the ether in the contract
+     * to the owner of the contract
+     */
+    function widthdraw() public onlyOwner {
+        address _owner = owner();
+        uint256 amount = address(this).amount;
+        (bool sent, ) = _owner.call{value: amount}("");
+        require(sent, "Failed to send Ether");
+    }
+
+    // Function to receive Ether.msg.data must be empty
+    receive() external payable {}
+
+    // Fallback function is called when msg.data is not empty
+    fallback() external payable {}
 }
