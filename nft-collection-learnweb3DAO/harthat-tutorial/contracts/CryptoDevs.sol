@@ -35,7 +35,7 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
     uint256 public presaleEnded;
 
     modifier onlyWhenNotPaused() {
-        require(!_pause, "Contract currently paused");
+        require(!_paused, "Contract currently paused");
         _;
     }
 
@@ -113,7 +113,7 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
      */
     function widthdraw() public onlyOwner {
         address _owner = owner();
-        uint256 amount = address(this).amount;
+        uint256 amount = address(this).balance;
         (bool sent, ) = _owner.call{value: amount}("");
         require(sent, "Failed to send Ether");
     }
