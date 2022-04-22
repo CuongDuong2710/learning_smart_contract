@@ -59,4 +59,25 @@ contract CryptoDevs is ERC721Enumerable, Ownable {
         presaleStarted = true;
         presaleEnded = block.timestamp + 5 minutes;
     }
+
+    /**
+     * @dev presaleMint allows a user to mint one NFT per transaction during the presale.
+     */
+    function preSaleMint() public payable onlyWhenNotPaused {
+        require(
+            presaleStarted && block.timestamp < presaleEnded,
+            "Presale is not running"
+        );
+        require(
+            whitelist.whitelistedAddresses(msg.sender),
+            "You are not whitelisted"
+        );
+        require(tokenIds < maxTokenIds, "Exceeded maximum Crypto Devs supply");
+        require(msg.value >= _price, "Ether sent is not correct");
+        tokenIds += 1;
+        //_safeMint is a safer version of the _mint function as it ensures that
+        // if the address being minted to is a contract, then it knows how to deal with ERC721 tokens
+        // If the address being minted to is not a contract, it works the same way as _mint
+        _safeMint(msg.sender, tokenIds);
+    }
 }
