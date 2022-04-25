@@ -4,10 +4,37 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Staking is Ownable {
-    struct StakingInfo {
+    struct StakePackage {
         uint256 rate;
-        uint256 minAmount;
+        uint256 lockDays;
+        uint256 minValue;
     }
 
-    mapping(address => mapping(address => StakingInfo)) stakemap;
+    struct StakingInfo {
+        uint256 startTime;
+        uint256 timePoint;
+        uint256 amount;
+        uint256 totalProfit;
+    }
+
+    event StakeUpdate(
+        address account,
+        uint256 packageId,
+        uint256 timestamp,
+        uint256 amount,
+        uint256 totalProfit
+    );
+
+    event StakeReleased(
+        address account,
+        uint256 packageId,
+        uint256 timestamp,
+        uint256 amount,
+        uint256 totalProfit
+    );
+
+    uint256 public totalStake = 0;
+    StakePackage[] public stakePackages;
+    
+    mapping(address => mapping(uint256 => StakingInfo)) stakes; // uint256 is packageId
 }
