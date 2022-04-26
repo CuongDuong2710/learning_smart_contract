@@ -85,6 +85,10 @@ contract Staking is Ownable {
      */
     function removeStakePackage(uint256 packageId_) public onlyOwner {
         // TO-DO: check more require ???
+        require(
+            stakePackages[packageId_].isOffline == true,
+            "Staking: Package is offline"
+        );
         delete stakePackages[packageId_];
     }
 
@@ -94,15 +98,50 @@ contract Staking is Ownable {
      * calculate the profit and add it to total Profit,
      * otherwise just add completely new stake.
      */
-    function stake(uint256 amount_, uint256 packageId_) external {}
+    function stake(uint256 amount_, uint256 packageId_) external {
+        // TO-DO: check more require ???
+        require(
+            stakePackages[packageId_].isOffline == true,
+            "Staking: Package is offline"
+        );
+        require(amount_ > 0, "Staking: deposit more than zero");
+
+        // Get StakingInfo from stakes[address][packageId]
+        StakingInfo storage _stakingInfo = stakes[msg.sender][packageId_];
+
+        // check if is there any amount of gold left in the stake package
+        if (_stakingInfo.amount > 0) {
+            // add more amount to stakes[address][packageId]
+            _stakingInfo.amount.add(amount_);
+
+            // TO-DO: update timePoint for different deposit
+            // _stakingInfo.timePoint = block.timestamp;
+
+            // calculate profit
+            uint256 totalProfit = calculateProfit(packageId_);
+
+            // add it to exist total Profit
+            _stakingInfo.totalProfit.add(totalProfit);
+        } else {
+            // new staking
+            stakes[msg.sender][packageId_] = StakingInfo(
+                block.timestamp, // startTime
+                block.timestamp, // timePoint
+                amount_, // amount
+                calculateProfit(packageId_); // totalProfit
+            );
+        }
+    }
 
     /**
      * @dev Take out all the stake amount and profit of account's stake from reserve contract
      */
     function unStake(uint256 packageId_) external {
         // validate available package and approved amount
-        StakePackage storage _stakePackage = stakePackages[packageId_];
-        require(_stakePackage.isOffline == true, "Staking: Package is offline");
+        require(
+            stakePackages[packageId_].isOffline == false,
+            "Staking: Package is offline"
+        );
     }
 
     /**
@@ -115,7 +154,9 @@ contract Staking is Ownable {
         uint256 percentageProfit = lockDays
             .mul(getAprOfPackage(packageId_))
             .div(oneYear);
-        uint256 amountProfit = percentageProfit.mul(_stakingInfo.amount).div(100000);
+        uint256 amountProfit = percentageProfit.mul(_stakingInfo.amount).div(
+            100000
+        );
         return amountProfit;
     }
 
