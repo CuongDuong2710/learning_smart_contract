@@ -124,6 +124,51 @@ export default function Home() {
   };
 
   /**
+   * checkIfPresaleEnded: checks if the presale has ended by quering the `presaleEnded`
+   * variable in the contract
+   */
+  const checkIfPresaleEnded = async () => {
+    try {
+      const provider = await getProviderOrSigner();
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+      // call the presaleEnded from the contract
+      const _presaleEnded = await nftContract.presaleEnded();
+      // _presaleEnded is a Big Number, so we are using the lt(less than function) instead of `<`
+      // Date.now()/1000 returns the current time in seconds
+      // We compare if the _presaleEnded timestamp is less than the current time
+      // which means presale has ended
+      const hasEnd = _presaleEnded.lt(Math.floor(Date.now() / 1000));
+      if (hasEnd) {
+        setPresaleEnded(true);
+      } else {
+        setPresaleEnded(false);
+      }
+      return hasEnd;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  /**
+   * getTokenIdsMinted: gets the number of tokenIds that have been minted
+   */
+  const getTokenIdsMinted = async () => {
+    try {
+      const provider = await getProviderOrSigner();
+      // Create a new instance of the Contract with a Signer, which allows
+      // update methods
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+      // call the tokenIds from the contract
+      const _tokenIds = await nftContract.tokenIds();
+      //_tokenIds is a `Big Number`. We need to convert the Big Number to a string
+      setTokenIdsMinted(_tokenIds.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
    * getOwner: calls the contract to retrieve the owner
    */
   const getOwner = async () => {
@@ -194,6 +239,8 @@ export default function Home() {
   useEffect(() => {
     console.log(">>> useEffect");
     if (!walletConnected) {
+      // Assign the Web3Modal class to the reference object by setting it's `current` value
+      // The `current` value is persisted throughout as long as this page is open
       web3ModalRef.current = new Web3Modal({
         network: "rinkeby",
         providerOptions: {},
