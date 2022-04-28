@@ -2,7 +2,12 @@
 
 // BaseURI: https://nft-collection-learnweb3.vercel.app/api/
 // TokenId: 1
-// https://nft-collection-learnweb3.vercel.app/api/1
+// API route: https://nft-collection-learnweb3.vercel.app/api/1
+/* {
+  "name": "Crypto Dev #1",
+  "description": "Crypto Dev is a collection of developers in crypto",
+  "image": "https://raw.githubusercontent.com/CuongDuong2710/learning_smart_contract/main/nft-collection-learnweb3DAO/my-app/public/cryptodevs/1.svg"
+  } */
 
 export default function handler(req, res) {
   // get the tokenId from the query params
@@ -20,4 +25,6 @@ export default function handler(req, res) {
     description: "Crypto Dev is a collection of developers in crypto",
     image: imgUrl + tokenId + ".svg",
   });
+  // Now you have an api route which Opensea can call to retrieve the metadata for the NFT
+  // Link OpenSea: https://testnets.opensea.io/assets/0x6bc126de61105dd2c675dd16025cf9fd020cd0b6/1
 }
