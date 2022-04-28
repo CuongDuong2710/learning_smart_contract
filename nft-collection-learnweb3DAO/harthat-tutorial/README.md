@@ -14,5 +14,7 @@ node scripts/sample-script.js
 npx hardhat help
 ```
 
-#
+# Contract Address
 Crypto Devs Contract Address: 0xC0526F51Bee23169EEd884f86700B6e4d56bed04
+# Edit METADATA_URL
+Crypto Devs Contract Address: 0x6bc126de61105Dd2C675dd16025cF9fd020cd0b6

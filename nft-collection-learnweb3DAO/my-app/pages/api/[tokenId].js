@@ -1,5 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
+// BaseURI: https://nft-collection-learnweb3.vercel.app/api/
+// TokenId: 1
+// https://nft-collection-learnweb3.vercel.app/api/1
+
 export default function handler(req, res) {
   // get the tokenId from the query params
   const tokenId = req.query.tokenId;
