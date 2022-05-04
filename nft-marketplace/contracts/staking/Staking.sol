@@ -86,7 +86,7 @@ contract Staking is Ownable {
     function removeStakePackage(uint256 packageId_) public onlyOwner {
         // TO-DO: check more require ???
         require(
-            stakePackages[packageId_].isOffline == true,
+            stakePackages[packageId_].isOffline == false,
             "Staking: Package is offline"
         );
         delete stakePackages[packageId_];
@@ -101,7 +101,7 @@ contract Staking is Ownable {
     function stake(uint256 amount_, uint256 packageId_) external {
         // TO-DO: check more require ???
         require(
-            stakePackages[packageId_].isOffline == true,
+            stakePackages[packageId_].isOffline == false,
             "Staking: Package is offline"
         );
         require(amount_ > 0, "Staking: deposit more than zero");
@@ -154,10 +154,10 @@ contract Staking is Ownable {
         uint256 percentageProfit = lockDays
             .mul(getAprOfPackage(packageId_))
             .div(oneYear);
-        uint256 amountProfit = percentageProfit.mul(_stakingInfo.amount).div(
+        // amount profit
+        return percentageProfit.mul(_stakingInfo.amount).div(
             100000
-        );
-        return amountProfit;
+        ); 
     }
 
     function getAprOfPackage(uint256 packageId_) public view returns (uint256) {
