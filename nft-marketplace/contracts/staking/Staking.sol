@@ -105,6 +105,10 @@ contract Staking is Ownable {
             "Staking: Package is offline"
         );
         require(amount_ > 0, "Staking: deposit more than zero");
+        // approve spend gold
+        require(gold.allowance(msg.sender, address(this)) > amount_);
+
+        uint256 _totalProfit;
 
         // Get StakingInfo from stakes[address][packageId]
         StakingInfo storage _stakingInfo = stakes[msg.sender][packageId_];
@@ -114,23 +118,30 @@ contract Staking is Ownable {
             // add more amount to stakes[address][packageId]
             _stakingInfo.amount.add(amount_);
 
-            // TO-DO: update timePoint for different deposit
-            // _stakingInfo.timePoint = block.timestamp;
+            // update timePoint for different deposit
+            _stakingInfo.timePoint = block.timestamp;
 
             // calculate profit
-            uint256 totalProfit = calculateProfit(packageId_);
+            _totalProfit = calculateProfit(packageId_);
 
             // add it to exist total Profit
-            _stakingInfo.totalProfit.add(totalProfit);
+            _stakingInfo.totalProfit.add(_totalProfit);
         } else {
             // new staking
             stakes[msg.sender][packageId_] = StakingInfo(
                 block.timestamp, // startTime
                 block.timestamp, // timePoint
                 amount_, // amount
-                calculateProfit(packageId_); // totalProfit
+                calculateProfit(packageId_) // totalProfit
             );
         }
+        // emit event
+        emit StakeUpdate(
+            msg.sender,
+            packageId_,
+            _stakingInfo.amount,
+            _stakingInfo.totalProfit
+        );
     }
 
     /**
@@ -142,6 +153,19 @@ contract Staking is Ownable {
             stakePackages[packageId_].isOffline == false,
             "Staking: Package is offline"
         );
+
+        // Get StakingInfo from stakes[address][packageId]
+        StakingInfo storage _stakingInfo = stakes[msg.sender][packageId_];
+        uint256 _amount = _stakingInfo.amount;
+        uint256 _totalProfit = _stakingInfo.totalProfit;
+
+        // return amount staking to user
+        gold.transferFrom(address(this), msg.sender, _stakingInfo.amount);
+        // return profit to user
+        reserve.distributeGold(msg.sender, _stakingInfo.totalProfit);
+
+        // emit event
+        emit StakeReleased(msg.sender, packageId_, _amount, _totalProfit);
     }
 
     /**
@@ -155,9 +179,7 @@ contract Staking is Ownable {
             .mul(getAprOfPackage(packageId_))
             .div(oneYear);
         // amount profit
-        return percentageProfit.mul(_stakingInfo.amount).div(
-            100000
-        ); 
+        return percentageProfit.mul(_stakingInfo.amount).div(100000);
     }
 
     function getAprOfPackage(uint256 packageId_) public view returns (uint256) {
