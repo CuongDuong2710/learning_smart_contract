@@ -10,9 +10,9 @@ contract StakingReserve is Ownable {
     IERC20 public mainToken;
     address public stakeAddress;
 
-    constructor(address _mainToken, address _stakeAddress) {
+    constructor(address _mainToken) {
         mainToken = IERC20(_mainToken);
-        stakeAddress = _stakeAddress;
+        // stakeAddress = _stakeAddress;
     }
 
     function getBalanceOfReserve() public view returns (uint256) {
@@ -20,7 +20,7 @@ contract StakingReserve is Ownable {
     }
 
     function distributeGold(address _recipient, uint256 _amount) public {
-        require(msg.sender == stakeAddress);
+        // require(msg.sender == stakeAddress);
         mainToken.transfer(_recipient, _amount);
     }
 }
