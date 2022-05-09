@@ -13,3 +13,6 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+# Crypto Devs Token Contract Address
+Crypto Devs Token Contract Address: 0xc70cacfbeb998f42B96DB1bbCf2aDCCea7af405D
