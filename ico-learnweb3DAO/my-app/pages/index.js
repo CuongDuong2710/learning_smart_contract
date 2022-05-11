@@ -139,6 +139,49 @@ export default function Home() {
   };
 
   /**
+   * claimCryptoDevTokens: Helps the user claim Crypto Dev Tokens
+   */
+  const claimCryptoDevTokens = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const tokenContract = new Contract(
+        TOKEN_CONTRACT_ADDRESS,
+        TOKEN_CONTRACT_ABI,
+        signer
+      );
+      const tx = await tokenContract.claim();
+      setLoading(true);
+      await tx.wait();
+      setLoading(false);
+      window.alert("Sucessfully claimed Crypto Dev Tokens");
+      await getBalanceOfCryptoDevTokens();
+      await getTotalTokensMinted();
+      await getTokensToBeClaimed();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
+   * getTotalTokensMinted: Retrieves how many tokens have been minted till now
+   * out of the total supply
+   */
+  const getTotalTokensMinted = async () => {
+    try {
+      const provider = await getProviderOrSigner();
+      const tokenContract = new Contract(
+        TOKEN_CONTRACT_ADDRESS,
+        TOKEN_CONTRACT_ABI,
+        provider
+      );
+      const _tokensMinted = await tokenContract.totalSupply();
+      setTokensMinted(_tokensMinted);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
    * Returns a Provider or Signer object representing the Ethereum RPC with or without the
    * signing capabilities of metamask attached
    *
@@ -169,12 +212,15 @@ export default function Home() {
     return web3Provider;
   };
 
+  /*
+        connectWallet: Connects the MetaMask wallet
+      */
   const connectWallet = async () => {
     try {
       // Get the provider from web3Modal, which in our case is MetaMask
       // When used for the first time, it prompts the user to connect their wallet
       await getProviderOrSigner();
-      setWalletConected(true);
+      setWalletConnected(true);
     } catch (error) {
       console.error(error);
     }
@@ -197,27 +243,85 @@ export default function Home() {
     }
   }, [walletConnected]);
 
+  /*
+        renderButton: Returns a button based on the state of the dapp
+      */
   const renderButton = () => {
-    return <button>Button</button>;
+    if (loading) {
+      return (
+        <div>
+          <button className={styles.button}>Loading...</button>
+        </div>
+      );
+    }
+    // If tokens to be claimed are greater than 0, Return a claim button
+    if (tokensToBeClaimed > 0) {
+      return (
+        <div>
+          <div className={styles.description}>
+            {tokensToBeClaimed * 10} Tokens can be claimed!
+          </div>
+          <button className={styles.button} onClick={claimCryptoDevTokens}>
+            Claim Tokens
+          </button>
+        </div>
+      );
+    }
+
+    // If user doesn't have any tokens to claim, show the mint button
+    return (
+      <div style={{ display: "flex-col" }}>
+        <div>
+          <input
+            type="number"
+            placeholder="Amount of tokens"
+            // BigNumber.from converts the `e.target.value` to a BigNumber
+            onChange={(e) => setTokenAmount(BigNumber.from(e.target.value))}
+            className={styles.input}
+          />
+        </div>
+        <button
+          className={styles.button}
+          disabled={!(tokenAmount > 0)}
+          onClick={() => mintCryptoDevToken(tokenAmount)}
+        >
+          Mint tokens
+        </button>
+      </div>
+    );
   };
 
   return (
     <div>
       <Head>
         <title>Crypto Devs</title>
-        <meta name="description" content="Whitelist-Dapp" />
+        <meta name="description" content="ICO-Dapp" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
         <div>
-          <h1 className={styles.title}>Welcome to Crypto Devs!</h1>
+          <h1 className={styles.title}>Welcome to Crypto Devs ICO!</h1>
           <div className={styles.description}>
-            Its an NFT collection for developers in Crypto.
+            You can claim or mint Crypto Dev tokens here
           </div>
-          <div className={styles.description}>
-            {tokenIdsMinted}/ 20 have been minted
-          </div>
-          {renderButton()}
+          {walletConnected ? (
+            <div>
+              {/* Format Ether helps us in converting a BigNumber to string */}
+              <div className={styles.description}>
+                You have minted {utils.formatEther(balanceOfCryptoDevTokens)}{" "}
+                Crypto Dev Tokens
+              </div>
+              <div className={styles.description}>
+                Overall {utils.formatEther(tokensMinted)} /10000 have been
+                minted!!!
+              </div>
+              {renderButton()}
+            </div>
+          ) : (
+            <button onClick={connectWallet} className={styles.button}>
+              Connect your wallet
+            </button>
+          )}
           <div>
             <img className={styles.image} src="./cryptodevs/0.svg" />
           </div>
