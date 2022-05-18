@@ -132,6 +132,7 @@ export default function Home() {
         value: utils.parseEther(value.toString()),
       });
       setLoading(true);
+      // wait for the transaction to get mined
       await tx.wait();
       setLoading(false);
       window.alert("Sucessfully minted Crypto Dev Tokens");
@@ -156,6 +157,7 @@ export default function Home() {
       );
       const tx = await tokenContract.claim();
       setLoading(true);
+      // wait for the transaction to get mined
       await tx.wait();
       setLoading(false);
       window.alert("Sucessfully claimed Crypto Dev Tokens");
@@ -179,6 +181,7 @@ export default function Home() {
         TOKEN_CONTRACT_ABI,
         provider
       );
+      // Get all the tokens that have been minted
       const _tokensMinted = await tokenContract.totalSupply();
       setTokensMinted(_tokensMinted);
     } catch (error) {
