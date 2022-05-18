@@ -13,7 +13,9 @@ import styles from "../styles/Home.module.css";
 export default function Home() {
   // Create a BigNumber `0`
   const zero = BigNumber.from(0);
+  // walletConnected keeps track of whether the user's wallet is connected or not
   const [walletConnected, setWalletConnected] = useState(false);
+  // loading is set to true when we are waiting for a transaction to get mined
   const [loading, setLoading] = useState(false);
 
   // tokensToBeClaimed keeps track of the number of tokens that can be claimed
@@ -92,12 +94,15 @@ export default function Home() {
    */
   const getBalanceOfCryptoDevTokens = async () => {
     try {
+      // Get the provider from web3Modal, which in our case is MetaMask
+      // No need for the Signer here, as we are only reading state from the blockchain
       const provider = await getProviderOrSigner();
       const tokenContract = new Contract(
         TOKEN_CONTRACT_ADDRESS,
         TOKEN_CONTRACT_ABI,
         provider
       );
+      // We will get the signer now to extract the address of the currently connected MetaMask account
       const signer = await getProviderOrSigner(true);
       const address = await signer.getAddress();
       const balance = await tokenContract.balanceOf(address);
