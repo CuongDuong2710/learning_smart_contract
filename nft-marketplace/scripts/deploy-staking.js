@@ -27,7 +27,7 @@ async function main() {
 
   // deploy Staking Reserve
   const StakingReserve = await ethers.getContractFactory("StakingReserve");
-  reserve = await StakingReserve.deploy(gold.addresss);
+  reserve = await StakingReserve.deploy();
   await reserve.deployed();
   console.log("StakingReserve deployed to:", reserve.address);
 
@@ -35,7 +35,7 @@ async function main() {
   const Staking = await ethers.getContractFactory("Staking");
   staking = await Staking.deploy(gold.address, reserve.address);
   await staking.deployed();
-  console.log("StakingReserve deployed to:", staking.address);
+  console.log("Staking deployed to:", staking.address);
 
   // Deployed on testnet:
 }
