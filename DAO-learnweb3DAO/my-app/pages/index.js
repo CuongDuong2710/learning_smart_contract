@@ -115,6 +115,99 @@ export default function Home() {
     }
   };
 
+  // Runs a loop `numProposals` times to fetch all proposals in the DAO
+  // and sets the `proposals` state variable
+  const fetchAllProposals = async () => {
+    try {
+      const proposals = [];
+      for (let i = 0; i < numProposals; i++) {
+        const proposal = await fetchProposalById(id);
+        proposals.push(proposal);
+      }
+      setProposals(proposals);
+      return proposals;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Calls the `voteOnProposal` function in the contract, using the passed
+  // proposal ID and Vote
+  const voteOnProposal = async (proposalId, _vote) => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const daoContract = getDaoContractInstance(signer);
+
+      let vote = _vote === "YAY" ? 0 : 1;
+      const txn = await daoContract.voteOnProposal(proposalId, vote);
+      setLoading(true);
+      await txn.wait();
+      setLoading(false);
+      await fetchAllProposals();
+    } catch (error) {
+      console.error(error);
+      window.alert(error.data.message);
+    }
+  };
+
+  // Calls the `executeProposal` function in the contract, using
+  // the passed proposal ID
+  const executeProposal = async (proposalId) => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const daoContract = getDaoContractInstance(signer);
+
+      const txn = await daoContract.executeProposal(proposalId);
+      setLoading(true);
+      await txn.wait();
+      setLoading(false);
+      await fetchAllProposals();
+    } catch (error) {
+      console.error(error);
+      window.alert(error.data.message);
+    }
+  };
+
+  // piece of code that runs everytime the value of `walletConnected` changes
+  // so when a wallet connects or disconnects
+  // Prompts user to connect wallet if not connected
+  // and then calls helper functions to fetch the
+  // DAO Treasury Balance, User NFT Balance, and Number of Proposals in the DAO
+  useEffect(() => {
+    if (!walletConnected) {
+      web3ModalRef.current = new Web3Modal({
+        network: "rinkeby",
+        providerOptions: {},
+        disableInjectedProvider: false,
+      });
+
+      connectWallet().then(() => {
+        getDAOTreasuryBalance();
+        getUserNFTBalance();
+        getNumProposalsInDAO();
+      });
+    }
+  }, [walletConnected]);
+
+  // Piece of code that runs everytime the value of `selectedTab` changes
+  // Used to re-fetch all proposals in the DAO when user switches
+  // to the 'View Proposals' tab
+  useEffect(() => {
+    if (selectedTab === "View Proposals") {
+      fetchAllProposals();
+    }
+  }, [selectedTab]);
+
+  // Render the contents of the appropriate tab based on `selectedTab`
+  function renderTabs() {
+    if (selectedTab === "Create Proposal") {
+      return renderCreateProposalTab();
+    } else if (selectedTab === "View Proposals") {
+      return renderViewProposalsTab();
+    }
+    return null;
+  }
+
   // Helper function to fetch a Provider/Signer instance from Metamask
   const getProviderOrSigner = async (needSigner = false) => {
     const provider = await web3ModalRef.current.connect();
