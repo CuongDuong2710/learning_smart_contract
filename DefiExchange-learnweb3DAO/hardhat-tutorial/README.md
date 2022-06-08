@@ -13,3 +13,5 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+# Defi Exchange contract address
+Exchange Contract Address: 0x4CCda3f43C754D5aFc4cc7211016fe283eD32877
