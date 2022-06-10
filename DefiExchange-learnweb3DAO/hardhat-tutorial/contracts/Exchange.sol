@@ -136,13 +136,14 @@ contract Exchange is ERC20 {
         // Δy in our case is `tokens to be received`
         // Δx = ((input amount)*99)/100, x = inputReserve, y = outputReserve
         // So by putting the values in the formulae you can get the numerator and denominator
-        uint256 numerator = inputAmountWithFee * outputReserve;
-        uint256 denominator = (inputReserve * 100) + inputAmountWithFee;
-        return numerator / denominator;
+        uint256 numerator = inputAmountWithFee * outputReserve; // (Δx * y)
+        uint256 denominator = (inputReserve * 100) + inputAmountWithFee; // (x + Δx), 100 is 99/100
+        return numerator / denominator; // Δy
     }
 
     /**
      * @dev Swaps Eth for CryptoDev Tokens
+     * _minTokens to keep ratio
      */
     function ethToCryptoDevToken(uint256 _minTokens) public payable {
         uint256 tokenReserve = getReserve();

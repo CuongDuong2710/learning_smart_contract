@@ -62,7 +62,7 @@ export const calculateCD = async (
   // He can add so that the price impact is not large
   // The ratio we follow is (amount of Crypto Dev tokens to be added) / (Crypto Dev tokens balance) = (Eth that would be added) / (Eth reserve in the contract)
   // So by maths we get (amount of Crypto Dev tokens to be added) = (Eth that would be added * Crypto Dev tokens balance) / (Eth reserve in the contract)
-  const cryptoDevTokenAmount = _addEther
+  const cryptoDevTokenAmount = _addEtherAmountWei
     .mul(cdTokenReserve)
     .div(etherBalanceContract);
   return cryptoDevTokenAmount;
