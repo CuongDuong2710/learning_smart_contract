@@ -199,7 +199,61 @@ export default function Home() {
 
   /**** END ****/
 
-  
+  /**** REMOVE LIQUIDITY FUNCTIONS ****/
+
+  /**
+   * _removeLiquidity: Removes the `removeLPTokensWei` amount of LP tokens from
+   * liquidity and also the calculated amount of `ether` and `CD` tokens
+   */
+  const _removeLiquidity = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      // Convert the LP tokens entered by the user to a BigNumber
+      const removeLPTokensWei = utils.parseEther(removeLPTokens);
+      setLoading(true);
+      // Call the removeLiquidity function from the `utils` folder
+      await removeLiquidity(signer, removeLPTokensWei);
+      setLoading(false);
+      await getAmounts();
+      setRemoveCD(zero);
+      setRemoveEther(zero);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      setRemoveCD(zero);
+      setRemoveEther(zero);
+    }
+  };
+
+  /**
+   * _getTokensAfterRemove: Calculates the amount of `Ether` and `CD` tokens
+   * that would be returned back to user after he removes `removeLPTokenWei` amount
+   * of LP tokens from the contract
+   */
+  const _getTokensAfterRemove = async (_removeLPTokens) => {
+    try {
+      const provider = await getProviderOrSigner();
+      // Convert the LP tokens entered by the user to a BigNumber
+      const removeLPTokenWei = utils.parseEther(_removeLPTokens);
+      // Get the Eth reserves within the exchange contract
+      const _ethBalance = await getEtherBalance(provider, null, true);
+      // get the crypto dev token reserves from the contract
+      const cryptoDevTokenReserve = await getReserveOfCDTokens(provider);
+      // call the getTokensAfterRemove from the utils folder
+      const { _removeEther, _removeCD } = await getTokensAfterRemove(
+        provider,
+        removeLPTokenWei,
+        _ethBalance,
+        cryptoDevTokenReserve
+      );
+      setRemoveEther(_removeEther);
+      setRemoveCD(_removeCD);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /**** END ****/
 
   return <div className={styles.container}></div>;
 }
