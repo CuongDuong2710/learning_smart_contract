@@ -163,5 +163,43 @@ export default function Home() {
 
   /*** END ***/
 
+  /**** ADD LIQUIDITY FUNCTIONS ****/
+
+  /**
+   * _addLiquidity helps add liquidity to the exchange,
+   * If the user is adding initial liquidity, user decides the ether and CD tokens he wants to add
+   * to the exchange. If he is adding the liquidity after the initial liquidity has already been added
+   * then we calculate the crypto dev tokens he can add, given the Eth he wants to add by keeping the ratios
+   * constant
+   */
+  const _addLiquidity = async () => {
+    try {
+      // Convert the ether amount entered by the user to Bignumber
+      const addEtherWei = utils.parseEther(addEther.toString());
+      // Check if the values are zero
+      if (!addCDTokens.eq(zero) && !addEtherWei.eq(zero)) {
+        const signer = await getProviderOrSigner(true);
+        setLoading(true);
+        // call the addLiquidity function from the utils folder
+        await addLiquidity(signer, addCDTokens, addEtherWei);
+        setLoading(false);
+        // Reinitialize the CD tokens
+        setAddCDTokens(zero);
+        // Get amounts for all values after the liquidity has been added
+        await getAmounts();
+      } else {
+        setAddCDTokens(zero);
+      }
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      setAddCDTokens(zero);
+    }
+  };
+
+  /**** END ****/
+
+  
+
   return <div className={styles.container}></div>;
 }
