@@ -16,3 +16,12 @@ A recent upgrade, the London Upgrade of August 2021, slightly changed how transa
 Pre-London Upgrade
 Post-London Upgrade
 The Pre-London Upgrade is good to understand and easier to wrap your head around initially than the Post-London Upgrade, and also provides the motivation for the upgrade.
+
+Gas: General Concepts
+Just like how seconds are a unit of time, and metres a unit of distance, gas by itself is a unit of computation on the Ethereum Network.
+
+The gas unit is used to measure the amount of computational effort required to execute a transaction on Ethereum. Since each transaction requires some computation resources to execute, it requires a fee, commonly called Gas fees or Transaction fees.
+
+Gas fees are paid in Ethereum's native currency - ether or ETH. How gas fees is calculated is slightly different pre- and post-London Upgrade.
+
+NOTE: Generally when someone says 'Gas' - they refer to 'Gas Fees' not the unit itself. However, for the purposes of this tutorial, we will be technically correct and say 'Gas' when referring to the unit, and 'Gas Fees' when referring to the fees in Ether.
