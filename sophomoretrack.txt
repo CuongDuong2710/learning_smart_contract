@@ -13,10 +13,12 @@ The answer to these questions lie within the concept of gas.
 
 A recent upgrade, the London Upgrade of August 2021, slightly changed how transaction fees are calculated and how gas works. For that reason, we will break this tutorial into two sections:
 
+---
 Pre-London Upgrade
 Post-London Upgrade
 The Pre-London Upgrade is good to understand and easier to wrap your head around initially than the Post-London Upgrade, and also provides the motivation for the upgrade.
 
+---
 Gas: General Concepts
 Just like how seconds are a unit of time, and metres a unit of distance, gas by itself is a unit of computation on the Ethereum Network.
 
@@ -25,3 +27,34 @@ The gas unit is used to measure the amount of computational effort required to e
 Gas fees are paid in Ethereum's native currency - ether or ETH. How gas fees is calculated is slightly different pre- and post-London Upgrade.
 
 NOTE: Generally when someone says 'Gas' - they refer to 'Gas Fees' not the unit itself. However, for the purposes of this tutorial, we will be technically correct and say 'Gas' when referring to the unit, and 'Gas Fees' when referring to the fees in Ether.
+
+--
+Pre-London Upgrade
+Before the London Upgrade took place, how much ether you needed to pay for a transaction was calculated using a simple formula.
+
+gas fees = gas spent * gas price
+
+Gas Spent is the total amount of gas (in gas units) that were used to execute the transaction
+Gas Price is the amount of ether you're willing to pay per gas unit of execution
+Gas prices are denominated in gwei - a denomination of ETH.
+
+1 Gwei = 0.000000001 ETH
+
+1 ETH = 10^9 Gwei
+
+So instead of saying your gas price is 0.000000001 ETH, you can say your gas price is 1 Gwei.
+
+Gwei stands for Giga-Wei, which is equal to 1,000,000,000 (10^9) wei. Wei is the smallest denomination of ETH. 1 ETH = 10^18 Wei.
+
+Example
+The cheapest transaction, in terms of amount of gas required to execute, is just the transfer of ETH from one account to another. This transaction costs 21,000 gas units.
+
+Suppose Alice wanted to pay Bob 1 ETH. The gas cost is 21,000 gas. Assume the gas price is 200 Gwei.
+
+Therefore, gas fees = 21,000 * 200 = 4,200,000 Gwei = 0.0042 ETH
+
+So, when Alice sends the money, 1.0042 ETH will be deducted from her account, and Bob will receive 1 ETH. The 0.0042 ETH fees goes to the miner who mined the block containing Alice's transaction.
+
+You may be wondering how the gas price was set to 200 Gwei? How much the gas price is set to is upto the user. Transactions with higher gas price have higher priority to be included in a block, as miners receive a higher tip for mining those first.
+
+Wallets like Metamask provide reasonable estimates for gas prices based on current network conditions for transactions to be executed - therefore most users don't need to touch the gas price values themselves. (Though, you can enable modification through Metamask settings)
