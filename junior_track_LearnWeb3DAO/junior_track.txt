@@ -79,3 +79,54 @@ Actually, one of the big downsides with plasma networks is that it's more diffic
 For fungible assets this can be mitigated by liquidity providers, but there is an associated capital cost. This is because assets on plasma networks are not exactly the same as the assets on the main chain. For example, you do not hold ETH on plasma, you usually hold wETH (wrapped ETH), which has a 1:1 value to ETH.
 
 To use Plasma, you can integrate one of several projects that have implemented Plasma, for example Polygon, which was formally called Matic.
+
+Data-Availability
+However, another dimension in which Layer 2's have varying tradeoffs is data availability. On main chains, we are used to having all data being posted publicly on the blockchain. This, however, carries along with it significant privacy issues.
+
+For example, if a professional trading firm was trading massive amounts on money on a DEX, they likely do not want their trading strategies to be made public, otherwise it's not useful to them anymore.
+
+NOTE: On-chain and off-chain in this context particularly refers to the MAIN Layer 1 chain. On-chain means data is available on the Layer 1 main chain, and off-chain means it is NOT available on the Layer 1 main chain, though it may be available on the Layer 2 chain.
+
+Validium Chains
+Validium works very similar to ZK rollups except data is stored off the main chain. Since transaction data is not published on the main chain, this introduces new trust assumptions as users must trust an operator to make data available when it is needed. This
+
+It is important to note that Validium is a type of data-availability situation, and does not concern itself with how transactions are executed.
+
+Volition Chains
+Volition chains are those which are the birthchild of Rollups and Validium data-availability approaches. Essentially, they allow for a hybrid data-availability scenario where users can decide what they want on the main chain and what they do not want on the main chain.
+
+For example, a large trading firm may not want every single trade it makes to be available publicly on the main chain, but at the end of the week require a proof to be posted on the main-chain to inherit it's security benefits.
+
+Again, similar to Validiums, this is just a data-availability situation, and does not concern itself with how the transactions are executed. Typically, you can use a Volition approach with ZKR's.
+
+Examples of Layer 2
+
+Immutable X
+Immutable X is a Layer 2 scaling solution for NFTs on Ethereum. It allows developers to build marketplaces, games, apps, and more. While Ethereum handles only about 15 transactions per second and suffers from high-gas fees, an Layer 2 solution like Immutable X handles 9,000 transactions per second with zero gas fees. It leverages Ethereum’s well-developed security, connections, and ecosystem to help developers.
+
+Polygon (formerly Matic)
+Polygon is a plasma-based, EVM-compatible, layer 2 scaling solution that makes use of proof-of-stake, side chains, and more. It is one of the most popular Ethereum L2 solutions out there today. For brief introductions to it, you should read New to Polygon? and Polygon Architecture.
+We will have more practical examples of using Polygon in future modules.
+
+Arbitrum
+Arbitrum is an optimistic rollup solution for general purpose smart contracts on Ethereum. It is EVM-compatible, and developers can easily port their existing Solidity code to Arbitrum.
+
+Optimism
+Optimism is also an optimistic rollup solution for general purpose smart contracts on Ethereum. It is also EVM-compatible, and develoeprs can port their existing Solidity code to Optimism.
+Arbitrum and Optimism differ in some low-level nitty-gritty technical details, but on the surface, they both operate within the same category.
+
+zkSync
+zkSync is a ZK-Rollup solution for Ethereum. Since generalized ZK-Rollups are extremely hard, currently zkSync supports ETH and ERC20 token transfers, NFTs, atomic swaps, and orderbook based DEX's.
+and many more... This is not an exhaustive list, and there are many more Layer 2 solutions out there competing for attention and market share, differing in technical details on low-level implementations. You can probably find hundreds if you look online.
+
+The ETH network ugprade and Layer 2's
+As we get closer to the ETH network upgrade (previously referred to as Eth2), a common question to ask is "will layer 2's still be relevant?"
+The short answer is yes.
+The long answer requires us looking at what the ETH upgrade is bringing to the table, and why it benefits Layer 2's.
+
+
+With the ETH upgrade, ETH is focused on enabling data sharding. Essentially this means that the single state of the network will be broken down into smaller sets of data called shards, and the goal is to reduce storage costs by making storage more accessible to the network. The consequence of doing this is that when rollups post proofs back to the main chain, it will be cheaper for the rollup to do so.
+
+Gas costs on rollup chains are currently limited by gas costs of storage on the main chain. Even though the computation on layer 2's is very cheap, posting proofs to the main chain still requires paying gas on Ethereum to store the proof. If storage costs on Ethereum go down, then cost of using rollup chains also goes down as proofs can be posted for cheaper. This will incentivize more people to use Layer 2 chains, and direct demand of Ethereum data storage will go down, which will further decrease storage costs on Ethereum even more, and so on.
+
+Therefore, the ETH upgrade will actually help secure Layer 2 solutions gain adoption and become even cheaper to use.
