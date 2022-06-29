@@ -1,0 +1,50 @@
+Junior Track Alternative Layer 1 Blockchains
+
+Layer 1 vs Layer 2
+Layer 1 and Layer 2 are terms used to describe 'types' of blockchains. Layer 1 blockchains are those which are the main blockchain themselves, whereas Layer 2 blockchains are those which are overlaying networks on top of a Layer 1 blockchain.
+
+For example, Ethereum and Bitcoin are Layer 1 blockchains, whereas Polygon, Arbitrum, Optimism, Lightning Network, etc. are examples of Layer 2 blockchains.
+
+Layer 1 blockchains change the rules of the protocol directly in an attempt to scale or provide better usability. They can include, for example, increasing the amount of data included in each block, or accelerating the block confirmation time for each block, to increase overall throughput. Often, this comes with the cost of reduced security and/or decentralization by increasing hardware requirements of running nodes, or increasing the cost to become a validator in Proof-of-Stake systems, etc.
+
+Example of Layer 1 blockchains include Ethereum, NEAR, Flow, Avalanche, Solana, Algorand, Bitcoin, etc.
+
+Layer 2 blockchains refer to networks that operate on top of an underlying Layer 1 blockchain, in an attempt to improve scalability and efficiency while deriving security and decentralization benefits from the main chain. This entails shifting some of the work of the Layer 1 blockchain to a Layer 2 network, and only using Layer 1 transactions for settlement - e.g. executing 1000 transactions on the layer 2 network, compiling their results together, and posting a proof of validity on the layer 1 blockchain in a single transaction.
+
+NEAR Protocol
+
+NEAR is a Layer-1 smart contract platform that utilizes parallel sharding storage and computation technology to scale. It also uses Proof of Stake consensus, instead of Ethereum's current Proof of Work, and has over 50 validators securing millions of dollars on the network.
+
+What is Sharding?
+The word shard means a small part of a whole. In the context of blockchains, sharding just means that instead of every single node on the network needing to process every single transaction (like Ethereum as of writing), the blockchain is split up into multiple smaller parts, and each validator only needs to worry about the transactions being executed on the shard it's a part of.
+This allows for parallel computation of transactions on different shards. This allows for faster processing of transactions, and hence higher scalability.
+
+How are shards managed?
+A common approach to managing all the individual shards is having a Beacon chain which acts as the 'manager' of all the shards. It is responsible for randomly assigning validators to specific shards, receiving updates from each of the shards individually and taking global snapshots of them, and processing stakes and slashing in the Proof of Stake consensus.
+
+What if there is a fork?
+While shard chains + Beacon chain model is powerful, it has complexities when we talk about what happens if the chain forks. 
+
+Due to this, NEAR follows a slightly improved model. In NEAR, the system is modeled logically as a single blockchain, where each block contains all the transactions for all of the blocks, and changes the state of all shards simultaneously. So if a fork happens, the entire chain effectively ends up choosing a single, logical longest chain.
+
+However, physically, no single participant needs to download the full state of the block, and only downloads the state relevant to their shard(s).
+
+How do transactions which interact with multiple shards work?
+Developing on NEAR
+Comparison to Ethereum
+
+Flow Blockchain
+Flow describes themselves as a "fast, decentralized, and developer-friendly blockchain". They are based on a multi-role architecture, and designed to scale without sharding.
+Flow is based on four foundations that make it unique and worth discussing:
+* Multi-role architecture
+* Resource-oriented programming
+* Upgradeable smart contracts
+* Easy onramps from fiat to crypto
+
+Avalanche
+Avalanche is an open source platform for building dApps and enterprise platforms in an interoperable ecosystem of blockchains. It is a smart contracts platform, which offers high throughput and near-instant transaction finality. Also, Avalanche supports Solidity so smart contracts from Ethereum can easily be ported over to Avalanche.
+Avalanche is an ecosystem, not a single blockchain. There are multiple chains that can exist on top of the Avalanche ecosystem. The most popular one is the Avalanche C-Chain, which is an EVM compatible chain and supports Solidity smart contracts. 
+
+Avalanche Design Architecture
+Subnetworks A subnetwork (or subnet), is a set of validators who are working to achieve consensus on a set of blockchains. Each blockchain on Avalanche is validated by one subnet, but each subnet can validate multiple blockchains. A given validator can be part of multiple subnets.
+
