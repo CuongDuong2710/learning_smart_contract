@@ -52,3 +52,5 @@ Virtual Machine Each blockchain on Avalanche must be a virtual machine. When a n
 
 AVAX Token All blockchains on Avalanche use the native token $AVAX to pay for operations made on the network. AVAX is also available as an ERC-20 on Ethereum, which can be bridged over to the Avalanche C-Chain.
 
+---------------------
+
