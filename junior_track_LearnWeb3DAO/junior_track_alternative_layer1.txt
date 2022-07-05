@@ -48,3 +48,7 @@ Avalanche is an ecosystem, not a single blockchain. There are multiple chains th
 Avalanche Design Architecture
 Subnetworks A subnetwork (or subnet), is a set of validators who are working to achieve consensus on a set of blockchains. Each blockchain on Avalanche is validated by one subnet, but each subnet can validate multiple blockchains. A given validator can be part of multiple subnets.
 
+Virtual Machine Each blockchain on Avalanche must be a virtual machine. When a new chain is created, it must specify the VM it wants to use - either something that already exists, or a new implementation by the developers. This is how the C-Chain can support the Ethereum Virtual Machine and support Solidity, while other chains on Avalanche do not.
+
+AVAX Token All blockchains on Avalanche use the native token $AVAX to pay for operations made on the network. AVAX is also available as an ERC-20 on Ethereum, which can be bridged over to the Avalanche C-Chain.
+
