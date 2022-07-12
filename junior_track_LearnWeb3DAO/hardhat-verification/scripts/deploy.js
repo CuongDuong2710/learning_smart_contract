@@ -21,7 +21,7 @@ async function main() {
   console.log('Verify Contract Address:', deployedVerifyContract.address)
 
   // Wait for etherscan to notice that the contract has been deployed
-  await sleep(10000)
+  await sleep(50000)
 
   // Verify the contract after deploying
   await hre.run('verify:verify', {
