@@ -11,3 +11,7 @@ GAS_REPORT=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+
+# IPFS location
+LW3punks: QmQBHarz2WFczTjz5GnhjHrbUPDnB48W5BM2v2h6HbE1rZ (https://ipfs.io/ipfs/QmQBHarz2WFczTjz5GnhjHrbUPDnB48W5BM2v2h6HbE1rZ)
+metadata: Qmbygo38DWF1V8GttM1zy89KzyZTPU2FLUzQtiDvB7q6i5 (https://ipfs.io/ipfs/Qmbygo38DWF1V8GttM1zy89KzyZTPU2FLUzQtiDvB7q6i5)
