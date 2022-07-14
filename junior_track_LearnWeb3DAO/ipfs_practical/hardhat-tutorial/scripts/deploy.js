@@ -7,7 +7,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 async function main() {
   // URL from where we can extract the metadata for a LW3Punks
   const metadataURL =
-    'ipfs.io/ipfs/QmQBHarz2WFczTjz5GnhjHrbUPDnB48W5BM2v2h6HbE1rZ'
+    'ipfs://QmQBHarz2WFczTjz5GnhjHrbUPDnB48W5BM2v2h6HbE1rZ/'
 
   /*
   A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,

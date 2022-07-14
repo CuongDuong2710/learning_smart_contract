@@ -20,5 +20,14 @@ metadata: Qmbygo38DWF1V8GttM1zy89KzyZTPU2FLUzQtiDvB7q6i5 (https://ipfs.io/ipfs/Q
 npm cache clear --force
 
 # Contract address
-LW3Punks Contract Address: 0x24ECF7220929E74dA1a831b274DAF1402BDb03F4
+LW3Punks Contract Address: 0xf871cB597681b226e95CB9e74F43AB300964d278
+# Create contract
+https://mumbai.polygonscan.com/tx/0x4cc0ca8115004b723eb0fcece5ad21517ebc159cc04104c84b1c800741811a88
+
+# Public mint
+https://mumbai.polygonscan.com/tx/0xa77d5218b3bea7f2ba776d16561b595e1ead3ce96578f9888a783f5f2233f13b
+
+# Token LW3Punks
+https://mumbai.polygonscan.com/token/0xf871cb597681b226e95cb9e74f43ab300964d278
+
 
