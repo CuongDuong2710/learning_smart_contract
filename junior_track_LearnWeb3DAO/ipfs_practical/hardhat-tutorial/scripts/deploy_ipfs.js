@@ -1,6 +1,8 @@
 const { ethers } = require('hardhat')
 require('dotenv').config({ path: '.env' })
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 async function main() {
   // URL from where we can extract the metadata for a LW3Punks
   const metadataURL =
