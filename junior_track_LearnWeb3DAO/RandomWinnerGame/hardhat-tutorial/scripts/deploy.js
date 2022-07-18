@@ -4,26 +4,57 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-const hre = require("hardhat");
+const { ethers } = require('hardhat')
+require('dotenv').config({ path: '.env' })
+require('@nomiclabs/hardhat-etherscan')
+const { FEE, VRF_COORDINATOR, LINK_TOKEN, KEY_HASH } = require('../constants')
+const hre = require('hardhat')
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  /*
+    A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
+    so randomWinnerGame here is a factory for instances of our RandomWinnerGame contract.
+  */
+  const randomWinnerGame = await ethers.getContractFactory('RandomWinnerGame')
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+   // deploy the contract
+  const deployedRandomWinnerGameContract = await randomWinnerGame.deploy(
+    VRF_COORDINATOR,
+    LINK_TOKEN,
+    KEY_HASH,
+    FEE
+  )
+  await deployedRandomWinnerGameContract.deployed()
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log(
+    'Verify Contract Address:',
+    deployedRandomWinnerGameContract.address
+  )
 
-  await lock.deployed();
+  console.log('Sleeping.....')
 
-  console.log("Lock with 1 ETH deployed to:", lock.address);
+  // Wait for etherscan to notice that the contract has been deployed
+  await sleep(50000)
+
+  // Verify the contract after deploying
+  await hre.run('verify:verify', {
+    address: deployedRandomWinnerGameContract.address,
+    constructorArguments: [VRF_COORDINATOR, LINK_TOKEN, KEY_HASH, FEE],
+  })
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// Call the main function and catch if there is any error
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
