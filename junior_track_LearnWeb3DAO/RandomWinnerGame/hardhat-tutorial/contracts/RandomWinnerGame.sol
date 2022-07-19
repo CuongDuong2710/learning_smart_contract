@@ -4,6 +4,12 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
+/* Requirements
+We will build a lottery game today
+Each game will have a max number of players and an entry fee
+After max number of players have entered the game, one winner is chosen at random
+The winner will get maxplayers*entryfee amount of ether for winning the game */
+
 contract RandomWinnerGame is VRFConsumerBase, Ownable {
   //Chainlink variables
   // The amount of LINK to send with the request
