@@ -7,7 +7,7 @@ A Merkle tree is a type of hash tree in which each leaf node is labeled with the
 
 A typical Merkle Tree looks something like this:
 
-![Hash Tree!](/assets/images/1920px-Hash_Tree.svg.png "Hash Tree")
+![Hash Tree!](./assets/images/1920px-Hash_Tree.svg.png "Hash Tree")
 
 ### Simple Example
 
@@ -15,7 +15,7 @@ Let's say we have 4 transactions: "Transaction A", B, C and D. All of them are e
 
 The following would be the resulting Merkle Tree of these transactions:
 
-![Simple Example!](/assets/images/simple_example.jpg "Simple Example")
+![Simple Example!](./assets/images/simple_example.jpg "Simple Example")
 
 ### Verifying Validity using the Merkle Root
 
@@ -23,7 +23,7 @@ When these transactions get rolled up into a block, the block header would conta
 
 This allows any miner to verify a fraudulent transaction. Let's say someone tries to introduce a false transaction instead of Transaction D. Let's call this Transaction E. Because this transaction is different from Transaction D, the hash is going to be different as well. The hash of Transaction E is Hash E. The Hash of C and E together is Hash CE, which is different from Hash CD. When Hash AB and CE are hashed together, you get Hash ABCE. Since hash ABCE is different from Hash ABCD, we can conclude that Transaction E is fraudulent.
 
-![Fraud transaction!](/assets/images/fraudulent_transaction.jpg "Fraud transaction")
+![Fraud transaction!](./assets/images/fraudulent_transaction.jpg "Fraud transaction")
 
 A miner can recompute the Merkle Root in their own block and try to publish that version to the blockchain, but since every other miner has a different Merkle Root, the fraudulent miner is easily rejected.
 
