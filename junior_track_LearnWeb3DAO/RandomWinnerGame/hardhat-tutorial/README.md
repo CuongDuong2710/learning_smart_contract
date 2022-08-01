@@ -16,6 +16,7 @@ npx hardhat run scripts/deploy.js
 - Deploy contract
 Verify Contract Address: 0xeF34eF4787D26D7957c587274354Dc39947990F2
 Verify Contract Address: 0x80B400d23db9ba57D5d6237aBD0a2040aE6AAc82
+0xf8bBdADD594EcBa8d1775B1d210C39BC1669255C
 
 Sleeping.....
 Nothing to compile
