@@ -1,4 +1,4 @@
-[Delegate Call](https://www.learnweb3.io/tracks/senior/delegate-call)
+# [Delegate Call](https://www.learnweb3.io/tracks/senior/delegate-call)
 
 ![How Storage works on delegatecall!](./images/how_storage_works_on_delegatecall.png "How Storage works on delegatecall") 
 
@@ -9,8 +9,8 @@
 The important thing to note when using .delegatecall() is that the context the original contract is passed to the target, and all state changes in the target contract reflect on the original contract's state and not on the target contract's state even though the function is being executed on the target contract.
 
 > 🤔 What happens when the target contract is called from the original contract using the `delegatecall()` method?
-
-=> It executes the function using the context of the original contract
+>
+> Answer: It executes the function using the context of the original contract
 
 In Ethereum, a function can be represented as `4 + 32*N` bytes where 4 bytes are for the function selector and the `32*N` bytes are for function arguments.
 
@@ -19,13 +19,76 @@ In Ethereum, a function can be represented as `4 + 32*N` bytes where 4 bytes are
 - **Function Argument**: Convert each argument into a hex string with a fixed length of 32 bytes and concatenate them.
 
 > 🤔 How can a function in Ethereum be represented?
-
-=> 4 + 32*N where N is the number of arguments in the function
+>
+> Answer: 4 + 32*N where N is the number of arguments in the function
 
 >  How do we construct a function selector?
-
-=> We hash the function's name along with the arguments without the empty space and then takes its first 4 bytes
+>
+> Answer: We hash the function's name along with the arguments without the empty space and then takes its first 4 bytes
 
 > What is a function argument in context of delegatecall?
+>
+> Answer: Function argument is created when you convert each argument into a 32 bytes hex string and then concatenate them
 
-=> Function argument is created when you convert each argument into a 32 bytes hex string and then concatenate them
+We have two contracts Student.sol and Calculator.sol. We dont know the ABI of Calculator.sol but we know that their exists an add function which takes in two uint's and adds them up within the Calculator.sol
+
+Lets see how we can use delegateCall to call this function from Student.sol
+
+```sh
+pragma solidity ^0.8.4;
+
+contract Student {
+
+    uint public mySum;
+    address public studentAddress;
+    
+    function addTwoNumbers(address calculator, uint a, uint b) public returns (uint)  {
+        (bool success, bytes memory result) = calculator.delegatecall(abi.encodeWithSignature("add(uint256,uint256)", a, b));
+        require(success, "The call to calculator contract failed");
+        return abi.decode(result, (uint));
+    }
+}
+```
+
+```sh
+pragma solidity ^0.8.4;
+
+contract Calculator {
+    uint public result;
+    address public user;
+    
+    function add(uint a, uint b) public returns (uint) {
+        result = a + b;
+        user = msg.sender;
+        return result;
+    }
+}
+```
+
+![Example!](./images/example.png "Example!") 
+
+>  What is a delegatecall method in solidity?
+>
+> Answer: A solidity method used to call a function in a target contract from original contract
+
+## Problematic
+
+Storage slots can have variables of different data types. What if the Student contract instead had values defined in this order?
+
+```sh
+contract Student {
+    address public studentAddress;
+    uint public mySum;
+}
+```
+
+In this case, the `address` variable would actually end up becoming the value of `result`. You may be thinking how can an `address` data type contain the value of a `uint`? To answer that, you have to think a little lower-level. At the end of the day, all data types are just bytes. `address` and `uint` are both 32 byte data types, and so the `uint` value for `result` can be set in the `address public studentAddress` variable as they're both still 32 bytes of data.
+
+## Actual Use Cases
+
+`.delegatecall()` is heavily used within proxy (upgradeable) contracts. Since smart contracts are not upgradeable by default, the way to make them upgradeable is typically by having one storage contract which does not change, which contains an address for an implementation contract. If you wanted to update your contract code, you change the address of the implementation contract to something new. 
+
+## Attack using delegatecall
+
+- We will have three smart contracts Attack.sol, Good.sol and Helper.sol
+- Hacker will be able to use Attack.sol to change the owner of Good.sol using .delegatecall()
