@@ -8,7 +8,7 @@
 
 The important thing to note when using .delegatecall() is that the context the original contract is passed to the target, and all state changes in the target contract reflect on the original contract's state and not on the target contract's state even though the function is being executed on the target contract.
 
-> 🤔 What happens when the target contract is called from the original contract using the `delegatecall()` method?
+> ##### 🤔 What happens when the target contract is called from the original contract using the `delegatecall()` method?
 >
 > Answer: It executes the function using the context of the original contract
 
@@ -18,15 +18,15 @@ In Ethereum, a function can be represented as `4 + 32*N` bytes where 4 bytes are
 
 - **Function Argument**: Convert each argument into a hex string with a fixed length of 32 bytes and concatenate them.
 
-> 🤔 How can a function in Ethereum be represented?
+> ##### 🤔 How can a function in Ethereum be represented?
 >
 > Answer: 4 + 32*N where N is the number of arguments in the function
 
->  How do we construct a function selector?
+>  ##### 🤔 How do we construct a function selector?
 >
 > Answer: We hash the function's name along with the arguments without the empty space and then takes its first 4 bytes
 
-> What is a function argument in context of delegatecall?
+> ##### 🤔 What is a function argument in context of delegatecall?
 >
 > Answer: Function argument is created when you convert each argument into a 32 bytes hex string and then concatenate them
 
@@ -67,7 +67,7 @@ contract Calculator {
 
 ![Example!](./images/example.png "Example!") 
 
->  What is a delegatecall method in solidity?
+>  ##### 🤔 What is a delegatecall method in solidity?
 >
 > Answer: A solidity method used to call a function in a target contract from original contract
 
@@ -217,19 +217,19 @@ describe("Attack", function () {
 
 Use stateless library contracts which means that the contracts to which you delegate the call should only be used for execution of logic and should not maintain state. This way, it is not possible for functions in the library to modify the state of the calling contract
 
-> How to prevent attacks on contracts which are using delegatecall?
+> ##### 🤔 How to prevent attacks on contracts which are using delegatecall?
 >
 > Answer: Maintain the state in the original contract for your system
 
 ## References
 
-> Whats going to happen when we call the setRollNumber function?
+> ##### 🤔 Whats going to happen when we call the setRollNumber function?
 
 ![Question1!](./images/Question1.png "Question1!") 
 
 > Answer: user will be set to 10 in Student.sol
 
-> What value should be returned if we call the greeting function?
+> ##### 🤔 What value should be returned if we call the greeting function?
 
 ![Question2!](./images/Question2.png "Question2!") 
 
