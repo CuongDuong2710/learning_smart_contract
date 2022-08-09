@@ -1,4 +1,4 @@
-# General
+## Create Hardhad project
 
 To setup a Hardhat project, Open up a terminal and execute these commands
 
