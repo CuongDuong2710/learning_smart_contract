@@ -71,14 +71,37 @@ module.exports = {
 };
 ```
 
-Compile the contract, open up a terminal pointing athardhat-tutorial directory and execute this command
+Compile the contract, open up a terminal pointing at `hardhat-tutorial` directory and execute this command
 
 ```sh
 npx hardhat compile
 ```
 
-To deploy, open up a terminal pointing athardhat-tutorial directory and execute this command
+To deploy, open up a terminal pointing at `hardhat-tutorial` directory and execute this command
 
 ```sh
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
+
+## Create NextJS app
+
+To create `next-app`, in terminal
+
+```sh
+npx create-next-app@latest
+```
+
+and press enter for all the questions
+
+Now to run the app, execute these commands in the terminal
+
+```sh
+cd my-app
+npm run dev
+```
+
+Now go to `http://localhost:3000`, your app should be running 🤘
+
+
+
+
