@@ -11,3 +11,9 @@
 npm install @openzeppelin/contracts keccak256 merkletreejs
 ```
 
+## Error install
+npm ERR! Cannot read property 'pickAlgorithm' of null
+```sh
+npm cache clear --force
+```
+
