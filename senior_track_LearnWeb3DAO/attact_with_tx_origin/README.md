@@ -20,4 +20,10 @@ So for example, if User calls Contract A, which then calls contract B within the
 
 > Yes
 
+## DOS Attack on a smart contract
+
+#### What will happen?
+
+There will be two smart contracts - `Good.sol` and `Attack.sol`. `Good.sol`. Initially the owner of `Good.sol` will be a good user. Using the attack function `Attack.sol` will be able to change the owner of `Good.sol` to itself.
+
 
