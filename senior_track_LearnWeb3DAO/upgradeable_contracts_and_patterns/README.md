@@ -20,6 +20,30 @@ The `Proxy Contract` is responsible for managing the state of the contract which
 
 ![Delegate call!](./images/delegate_call.png "Delegate call!")
 
+🤔 Why do we use delegatecall in proxy pattern, and not regular call?
+
+> It allows the state to live in one contract and persist across upgrades made to the implementation contract
+
+🤔 The proxy pattern splits your contract into what?
+
+> A Proxy Contract and an Implementation Contract
+
+This pattern becomes interesting when `Implementation Contract` can be replaced which means the logic which is executed can be replaced by another version of the `Implementation Contract` without affecting the state of the contract which is stored in the proxy.
+
+🤔 What design pattern can be used to write upgradeable smart contracts?
+
+> Proxy Patterns
+
+There are mainly three ways in which we can replace/upgrade the `Implementation Contract`:
+
+1. Diamond Implementation
+
+2. Transparent Implementation
+
+3. UUPS Implementation
+
+We will be using libraries from openzeppelin which support upgradeable contracts. To install those libraries, in the same folder execute the following command:
+
 ```sh
 npm i @openzeppelin/contracts-upgradeable @openzeppelin/hardhat-upgrades @nomiclabs/hardhat-etherscan --save-dev
 ```
