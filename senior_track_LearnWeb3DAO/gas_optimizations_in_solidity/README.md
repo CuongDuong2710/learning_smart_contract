@@ -38,6 +38,51 @@ It's also important to note that elements in `memory` and `calldata` cannot be p
 
 > False
 
+### Storage vs Memory
+
+Changing `storage variables` requires more gas than `variables in memory`. It's better to `update storage variables at the end after all the logic has already been implemented`.
+
+So given two samples of code
+
+```sh
+contract A {
+    uint public counter = 0;
+    
+    function count() {
+        for(uint i = 0; i < 10; i++) {
+            counter++;
+        }
+    }
+    
+}
+```
+
+```sh
+contract B {
+    uint public counter = 0;
+    
+    function count() {
+        uint copyCounter;
+        for(uint i = 0; i < 10; i++) {
+            copyCounter++;
+        }
+        counter = copyCounter;
+    }
+    
+}
+```
+
+The second sample of code is `more gas optimized` because we are `only writing to the storage variable counter only once` as compared to the first sample where we were `writing to storage in every iteration`. 
+
+Even though we are performing one extra write overall in the second code sample, the `10 writes to memory and 1 write to storage` is still cheaper than `10 writes directly to storage`.
+
+🤔 Should you write to storage variables in a loop, or create a local copy and update the storage variable at the end even if it means having a higher number of total read/writes?
+
+> Create a local copy in memory because the cost of additional write is still lower than writing to storage all the time
+
+
+
+
 
 
 
