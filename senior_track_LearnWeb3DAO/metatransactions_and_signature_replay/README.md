@@ -6,5 +6,32 @@ For those of you who have used OpenSea, ever noticed how OpenSea `lets you make 
 
 Meta transactions are also commonly used for `gas-less transaction experiences`, for example asking the users to `sign a message to claim an NFT`, instead of paying gas to send a transaction to claim an NFT.
 
+🤔 Which of the following is NOT a valid use case for Meta Transactions?
 
+> Guaranteeing your transaction will be included in the next block
 
+🤔 What role does a relayer play in the context of metatransactions?
+
+> Relayer pays the gas for transactions initiated by the users through a signature
+
+🤔 What are digital signatures used for?
+
+> Ensuring data integrity and proof that a certain person sent that message
+
+🤔 Which digital signatures algorithm does Ethereum use?
+
+> ECDSA
+
+🤔 What is uint256's max value in hexadecimal?
+
+> 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+🤔 Why is signature replay a problem?
+
+> Signature replay can make it seem like the user gave permission for something they did not
+
+🤔 Is this contract vulnerable to Signature Replay?
+
+![Meta transaction!](./images/metatransactions_and_signature_replay.png "Meta transaction")
+
+> No
