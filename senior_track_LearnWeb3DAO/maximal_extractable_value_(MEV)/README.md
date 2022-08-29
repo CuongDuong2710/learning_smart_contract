@@ -145,3 +145,5 @@ Just wow 🤯
 - [Ethereum.org docs](https://ethereum.org/en/developers/docs/mev/)
 
 - [Flashbots docs](https://docs.flashbots.net/flashbots-auction/overview)
+
+- [Writing Flashbots](https://writings.flashbots.net/writings/searching-post-merge)
