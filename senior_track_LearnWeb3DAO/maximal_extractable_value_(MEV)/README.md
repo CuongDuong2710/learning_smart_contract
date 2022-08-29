@@ -36,14 +36,36 @@ Searchers use the concept of `Gas Golfing` to be able to program transactions in
 
 > Searchers run complex algorithms and bots to try to make profit on-chain
 
+## Frontrunning
+
+## Flashbots
 
 🤔 Why do miners choose to run the Flashbots software?
 
 > Because they cannot keep track of all MEV opportunities alone
 
+
 🤔 Today, most of the MEV is extracted by?
 
 > Searchers
+
+## Use cases of MEV and Flashbots
+
+### Liquidations
+
+Similarly, when the borrower gets liquidated, some part of their collateral goes to the lender which includes interest and the borrowed money. Along with that the borrower also `has to pay a liquidation fee which goes to the user/bot which started the liquidation transaction.`
+
+`Searchers` run algorithms to keep track of borrowers on various lending protocols to detect if someone can be liquidated. If they find an opportunity to liquidate someone, they can extract MEV from that opportunity by `being the first to get their liquidation transaction mined therefore earning the liquidating fees.`
+
+### Sandwich Attacks
+
+1. Searcher sells a lot of `Token A` for `Token B`, driving down the price of `Token A` and driving up the price of `Token B`
+2. User's transaction goes through, which also sells a lot of `Token A` for `Token B`, but receives less `Token B` than originally anticipated. This further drives down `Token A` price and increases `Token B` price.
+3. Searcher sells back their `Token B` for `Token A`, ending up with more `Token A` than they started off with, making a profit.
+
+Since searchers add two transactions to the block right before and after the user's large trade, it is called a Sandwich Attack.
+
+### Recovering funds from compromised accounts
 
 🤔 What is an example of an MEV opportunity?
 
@@ -55,14 +77,71 @@ Searchers use the concept of `Gas Golfing` to be able to program transactions in
 
 > All of the above
 
+## The good and the bad
+
 🤔 Why are frontrunning bots not common anymore?
 
 > Because most MEV goes through Flashbots today which skips the public mempool
+
+## Architecture of Flash bots
+
+![Architecture of Flash bots!](./images/architecture_of_flash_bots.png "Architecture of Flash bots")
 
 🤔 Flashbots Relay is currently centralized?
 
 > True
 
+### eth_sendBundle
+
+Flashbots introduced a new `eth_sendBundle` RPC which is a standard format to interact with the flashbot relayers and miners. It includes array of arbitrary signed Ethereum transactions along with some metadata
+
+Here is a list of all the params it takes:
+
+```sh
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_sendBundle",
+  "params": [
+    {
+      txs,               // Array[String], A list of signed transactions to execute in an atomic bundle
+      blockNumber,       // String, a hex encoded block number for which this bundle is valid on
+      minTimestamp,      // (Optional) Number, the minimum timestamp for which this bundle is valid, in seconds since the unix epoch
+      maxTimestamp,      // (Optional) Number, the maximum timestamp for which this bundle is valid, in seconds since the unix epoch
+      revertingTxHashes, // (Optional) Array[String], A list of tx hashes that are allowed to revert
+    }
+  ]
+}
+```
+
 🤔 What is the new RPC call introduced by Flashbots?
 
 > eth_sendBundle
+
+## Explorer
+
+To view how MEV is progressing over the years, the flashbot team has built an explorer. Do check it out, it's amazing. Follow this [link](https://explore.flashbots.net/)
+
+## Example of MEV
+
+A real world arbitrage MEV [transaction](https://etherscan.io/tx/0x2bde6e654eb93c990ae5b50a75ce66ef89ea77fb05836d7f347a8409f141599f)
+
+---
+
+Right now most of the flashbots work is still in the research and early phases. But as we all can understand, it has a lot of potentials.
+
+Web3 is full of potential and we are just getting started 🚀 👀
+
+Just wow 🤯
+
+## Recommended Readings
+
+- [Ethereum is a Dark Forest](https://www.paradigm.xyz/2020/08/ethereum-is-a-dark-forest)
+
+- [Escaping the Dark Forest](https://samczsun.com/escaping-the-dark-forest/)
+
+## References
+
+- [Ethereum.org docs](https://ethereum.org/en/developers/docs/mev/)
+
+- [Flashbots docs](https://docs.flashbots.net/flashbots-auction/overview)
