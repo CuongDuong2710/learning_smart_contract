@@ -52,6 +52,16 @@ module.exports = {
 };
 ```
 
+Note that we are using `goerli` here which is an Ethereum testnet, similar to Rinkeby and Ropsten, but the only one supported by Flashbots.
+
+Now its time to set up some environment variables, create a new file `.env` under your root folder, and add the following lines of code to it.
+
+```sh
+QUICKNODE_RPC_URL="QUICKNODE_RPC_URL"
+PRIVATE_KEY="YOUR-PRIVATE-KEY"
+QUICKNODE_WS_URL="QUICKNODE_WS_URL"
+```
+
 
 
 Transaction hash
