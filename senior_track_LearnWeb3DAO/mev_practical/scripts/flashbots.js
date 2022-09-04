@@ -11,9 +11,9 @@ async function main() {
 
   console.log('Address of Fake NFT Contract:', FakeNFT.address)
 
-  /* // Create a Alchemy WebSocket Provider
+  // Create a Alchemy WebSocket Provider
   const provider = new ethers.providers.WebSocketProvider(
-    process.env.ALCHEMY_WEBSOCKET_URL,
+    process.env.QUICKNODE_WS_URL,
     'goerli'
   )
 
@@ -62,7 +62,7 @@ async function main() {
     if ('error' in bundleResponse) {
       console.log(bundleResponse.error.message)
     }
-  }) */
+  })
 }
 
 main()
