@@ -46,5 +46,33 @@ The CELO token, and other assets like BTC and ETH, serve as collateral for these
 
 > False
 
+### On-Chain Governance
+
+Unlike Ethereum, where on-chain upgrades happen through forking and community consensus on which fork to follow, Celo uses an on-chain governance mechanism for aspects of the protocol that reside in the Celo Core Contracts and for a number of parameters used by the Celo blockchain.
+
+Proposals in the governance contract are selected and voted on by CELO token holders, and the governance contract can execute the relevant code if the proposal passes.
+
+🤔 How do operators do decision making on Celo?
+
+> Through on-chain governance
+
+### Mobile-first Identity Layer
+
+Celo offers a `lightweight identity layer` that `allows users to identify and securely transact with other users via their phone numbers`. Celo Wallet enables payments directly to users listed in the devices' contact list.
+
+A user can request to link their phone number to their address through the `Attestations contract`. The contract uses a decentralized source of randomness through Oracles to pick a few validators who produce and send signed secret messages over SMS. The user then submits these back to the Attestations contract, and if successfully verified, adds a mapping from the phone number to the user's account.
+
+🤔 Which core contract is used to link phone numbers to wallet addresses?
+
+> Attestations Contract
+
+### Rich Transactions
+
+Firstly, the CELO token, while being the native token of the Celo blockchain, is also an ERC-20 token. This means `no more wrapped assets`! No more WETH like on Ethereum, because ETH does not behave as an ERC-20 token. This simplifies the life of application developers.
+
+Secondly, as mentioned before, transaction fees on Celo can be paid using the stablecoins.
+
+Thirdly, an Escrow contract allows users to send payments to phone numbers who don't yet have an account on the Celo blockchain. Payments are sent to the Escrow contract, and can be withdrawn by the intended recipient after they create an account and link their phone number to their address.
+
 
 
