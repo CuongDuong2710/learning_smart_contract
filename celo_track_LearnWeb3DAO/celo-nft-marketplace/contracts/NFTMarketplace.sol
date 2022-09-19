@@ -9,6 +9,7 @@ contract NFTMarketplace {
         address seller;
     }
 
+    // 2D Mapping of Contract Address -> (Token ID -> Listing Data)
     mapping(address => mapping(uint256 => Listing)) public listings;
 
     // Requires the msg.sender is the owner of the specified NFT
@@ -42,6 +43,26 @@ contract NFTMarketplace {
       address seller
     )
 
+    event ListingCanceled(
+      address nftAddress,
+      uint256 tokenId,
+      address seller
+    )
+
+    event ListingUpdated(
+      address nftAddress,
+      uint256 tokenId,
+      uint256 newPrice,
+      address seller
+    )
+
+    event ListingPurchased(
+      address nftAddress,
+      uint256 tokenId,
+      address seller,
+      address buyer
+    )
+
     function createListing(
         address nftAddress,
         uint256 tokenId,
@@ -50,6 +71,80 @@ contract NFTMarketplace {
       isNotListed(nftAddress, tokenId)
       isNFTOwner(nftAddress, tokenId)
     {
-      
+      require(price > 0, "MRKT: Price must be > 0");
+
+      IERC721 nftContract = IERC721(nftAddress);
+      require(
+        nftContract.isApprovedForAll(msg.sender, address(this)) ||
+          nftContract.getApproved(tokenId) == address(this),
+        "MRKT: No approval for NFT"
+      );
+
+      listings[nftAddress][tokenId] = Listing({
+        price: price,
+        seller: msg.sender
+      });
+
+      emit ListingCreated(nftAddress, tokenId, price, msg.sender);
     }
+
+    function cancelListing(address nftAddress, uint256 tokenId) 
+      external
+      isListed(nftAddress, tokenId)
+      isNFTOwner(nftAddress, tokenId)
+    {
+      // Delete the Listing struct from the mapping
+      // Freeing up storage saves gas!
+      delete listings[nftAddress][tokenId];
+
+      emit ListingCanceled(nftAddress, tokenId, msg.sender);
+    }
+
+    function updateListing(
+      address nftAddress, 
+      uint256 tokenId, 
+      uint256 newPrice
+    ) external 
+      isListed(nftAddress, tokenId) 
+      isNFTOwner(nftAddress, tokenId) 
+    {
+      // Cannot update the price to be < 0
+      require(newPrice > 0, "MRKT: Price must be > 0");
+
+      // Update the listing price
+      listings[nftAddress][tokenId].price = newPrice;
+
+      // Emit the event
+      emit ListingUpdated(nftAddress, tokenId, newPrice, msg.sender);
+    }
+
+    function purchaseListing(address nftAddress, uint256 tokenId) 
+      external
+      payable
+      isListed(nftAddress, tokenId)
+    {
+      // Load the listing in a local copy
+      Listing memory listing = listings[nftAddress][tokenId];
+
+       // Buyer must have sent enough ETH
+       require(msg.value == listing.price, "MRKT: Incorrect ETH supplied");
+
+       // Delete listing from storage, save some gas
+       delete listings[nftAddress][tokenId];
+
+       // Transfer NFT from seller to buyer
+       IERC721(nftAddress).safeTransferFrom(
+        listing.seller,
+        msg.sender,
+        tokenId
+       );
+
+       // Transfer ETH sent from buyer to seller
+       (bool sent, ) = payable(listing.seller).call{value: msg.value}("");
+       require(sent, "Failed to transfer eth");
+
+       // Emit the event
+       emit ListingPurchased(nftAddress, tokenId, listing.seller, msg.sender);
+    }
+
 }
