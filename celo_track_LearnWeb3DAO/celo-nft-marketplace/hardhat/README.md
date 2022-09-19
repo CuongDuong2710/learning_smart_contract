@@ -41,3 +41,7 @@ npx hardhat run scripts/deploy.js --network alfajores
 + @nomicfoundation/hardhat-chai-matchers@1.0.3
 + @nomiclabs/hardhat-etherscan@3.1.0
 + typescript@4.8.3
+
+
+Celo NFT deployed to: 0x2f4016FBD38e9e2E54043154F04995bD13CE7db2
+NFT Marketplace deployed to: 0x0e34AF070FaB2ADB7feEE3B11509351bD0D369D2
