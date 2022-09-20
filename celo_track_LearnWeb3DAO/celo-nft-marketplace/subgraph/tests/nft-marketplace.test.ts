@@ -8,7 +8,7 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { ExampleEntity } from "../generated/schema"
-import { ListingCanceled } from "../generated/NFTMarketplace /NFTMarketplace "
+import { ListingCanceled } from "../generated/NFTMarketplace/NFTMarketplace"
 import { handleListingCanceled } from "../src/nft-marketplace"
 import { createListingCanceledEvent } from "./nft-marketplace-utils"
 
