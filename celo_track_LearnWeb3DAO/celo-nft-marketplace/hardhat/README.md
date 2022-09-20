@@ -45,3 +45,36 @@ npx hardhat run scripts/deploy.js --network alfajores
 
 Celo NFT deployed to: 0x2f4016FBD38e9e2E54043154F04995bD13CE7db2
 NFT Marketplace deployed to: 0x0e34AF070FaB2ADB7feEE3B11509351bD0D369D2
+
+## The Graph
+
+> graph codegen
+
+What this does is, it converts our schema.graphql entity into Typescript (actually, AssemblyScript) types so we can do type-safe programming in our script. We will see how now!
+
+```sh
+  Skip migration: Bump mapping apiVersion from 0.0.1 to 0.0.2
+  Skip migration: Bump mapping apiVersion from 0.0.2 to 0.0.3
+  Skip migration: Bump mapping apiVersion from 0.0.3 to 0.0.4
+  Skip migration: Bump mapping apiVersion from 0.0.4 to 0.0.5
+  Skip migration: Bump mapping apiVersion from 0.0.5 to 0.0.6
+  Skip migration: Bump manifest specVersion from 0.0.1 to 0.0.2
+  Skip migration: Bump manifest specVersion from 0.0.2 to 0.0.4
+✔ Apply migrations
+✔ Load subgraph from subgraph.yaml
+  Load contract ABI from abis\NFTMarketplace .json
+✔ Load contract ABIs
+  Generate types for contract ABI: NFTMarketplace (abis\NFTMarketplace .json)
+  Write types to generated\NFTMarketplace\NFTMarketplace.ts
+✔ Generate types for contract ABIs
+✔ Generate types for data source templates
+✔ Load data source template ABIs
+✔ Generate types for data source template ABIs
+✔ Load GraphQL schema from schema.graphql
+  Write types to generated\schema.ts
+✔ Generate types for GraphQL schema
+
+Types generated successfully
+```
+
+See the files being imported from the `generated` folder? That's what `graph codegen` does. It converts our contract events and GraphQL entity definitions into Typescript types, so we can use them for type-safe programming in our script.
