@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ CuongDuong2710/celo-nft-marketplace",
-    "create-local": "graph create --node http://localhost:8020/ CuongDuong2710/celo-nft-marketplace",
-    "remove-local": "graph remove --node http://localhost:8020/ CuongDuong2710/celo-nft-marketplace",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 CuongDuong2710/celo-nft-marketplace",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ cuongduong2710/celo-nft-marketplace",
+    "create-local": "graph create --node http://localhost:8020/ cuongduong2710/celo-nft-marketplace",
+    "remove-local": "graph remove --node http://localhost:8020/ cuongduong2710/celo-nft-marketplace",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 cuongduong2710/celo-nft-marketplace",
     "test": "graph test"
   },
   "dependencies": {

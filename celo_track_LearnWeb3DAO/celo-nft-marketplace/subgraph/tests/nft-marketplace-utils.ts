@@ -5,7 +5,7 @@ import {
   ListingCreated,
   ListingPurchased,
   ListingUpdated
-} from "../generated/NFTMarketplace /NFTMarketplace "
+} from "../generated/NFTMarketplace/NFTMarketplace"
 
 export function createListingCanceledEvent(
   nftAddress: Address,

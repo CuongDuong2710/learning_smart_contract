@@ -6,7 +6,7 @@ dataSources:
     name: NFTMarketplace
     network: celo-alfajores
     source:
-      address: "0x0e34AF070FaB2ADB7feEE3B11509351bD0D369D2"
+      address: "0x0e34af070fab2adb7feee3b11509351bd0d369d2"
       abi: NFTMarketplace
       startBlock: 13647828
     mapping:
@@ -20,7 +20,7 @@ dataSources:
         - ListingUpdated
       abis:
         - name: NFTMarketplace
-          file: ./abis/NFTMarketplace .json
+          file: ./abis/NFTMarketplace.json
       eventHandlers:
         - event: ListingCanceled(address,uint256,address)
           handler: handleListingCanceled
