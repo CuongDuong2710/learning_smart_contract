@@ -41,3 +41,11 @@ npm install @rainbow-me/rainbowkit wagmi ethers
 ```
 
 We are all familiar with what ethers is. RainbowKit is a React component library which makes it easy to connect to wallets. Under the hood, it uses wagmi, which is a React hooks library to interact with contracts and wallets.
+
+## Installing Graphql
+
+To get started with querying the subgraph, let's install the requisite libraries which will help us make GraphQL queries.
+
+```sh
+npm install urql graphql
+```
