@@ -77,5 +77,24 @@ export default function Create() {
       )
       await approvalTxn.wait()
     }
+
+    // Function to call `createListing` in the marketplace contract
+    async function createListing() {
+      // Initialize an instance of the marketplace contract
+      const MarketplaceContract = new Contract(
+        MARKETPLACE_ADDRESS,
+        MarketplaceABI,
+        signer
+      )
+
+      // Send the create listing transaction
+      const createListingTxn = await MarketplaceContract.createListing(
+        nftAddress,
+        tokenId,
+        parseEther(price)
+      )
+
+      await createListingTxn.wait()
+    }
   }
 }
