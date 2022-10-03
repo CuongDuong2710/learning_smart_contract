@@ -7,7 +7,6 @@ import MarketplaceABI from '../abis/NFTMarketplace.json'
 import Navbar from '../components/Navbar'
 import styles from '../styles/Create.module.css'
 import { MARKETPLACE_ADDRESS } from '../constants'
-import { themeVars } from '@rainbow-me/rainbowkit/dist/css/sprinkles.css'
 
 export default function Create() {
   // State variables to contain information about the NFT being sold

@@ -38,10 +38,10 @@ export default function Home() {
 
     // Send the query to the subgraph GraphQL API, and get the response
     const response = await urqlClient.query(listingsQuery).toPromise()
-    const listingEntities = response.data.listingEntities
+    const listingEntities = response.data?.listingEntities
 
     // Filter out active listings i.e. ones which haven't been sold yet
-    const activeListings = listingEntities.filter((l) => l.buyer === null)
+    const activeListings = listingEntities?.filter((l) => l.buyer === null)
 
     // Update state variables
     setListings(activeListings)
