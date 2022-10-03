@@ -116,7 +116,7 @@ export default function Create() {
         />
         <input 
           type="text"
-          placeholder="Price (in CELO"
+          placeholder="Price (in CELO)"
           value={price}
           onChange={() => {
             if (e.target.value === "") {
