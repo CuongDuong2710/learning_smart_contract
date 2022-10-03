@@ -97,4 +97,50 @@ export default function Create() {
       await createListingTxn.wait()
     }
   }
+
+  return (
+    <>
+      <Navbar />
+
+      <div className={styles.container}>
+        <input
+          type="text"
+          placeholder="NFT Address 0x..."
+          value={nftAddress}
+          onChange={(e) => setNftAddress(e.target.value)}
+        />
+        <input 
+          type="text"
+          placeholder="Token ID"
+          value={tokenId}
+          onChange={(e) => setTokenId(e.target.value)}
+        />
+        <input 
+          type="text"
+          placeholder="Price (in CELO"
+          value={price}
+          onChange={() => {
+            if (e.target.value === "") {
+              setPrice("0")
+            } else {
+              setPrice(e.target.value)
+            }
+          }}
+        />
+        {/* Button to create the listing */}
+        <button onClick={handleCreateListing} disabled={loading}>
+          {loading ? "Loading..." : "Create"}
+        </button>
+
+        {/* Button to take user to the NFT details page after listing is created */}
+        {showListingLink && (
+          <Link href={`/${nftAddress}/${tokenId}`}>
+            <a>
+              <button>View Listing</button>
+            </a>
+          </Link>
+        )}
+      </div>
+    </>
+  )
 }
