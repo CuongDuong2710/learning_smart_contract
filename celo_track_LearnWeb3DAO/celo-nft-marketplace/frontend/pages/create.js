@@ -76,25 +76,25 @@ export default function Create() {
       )
       await approvalTxn.wait()
     }
+  }
 
-    // Function to call `createListing` in the marketplace contract
-    async function createListing() {
-      // Initialize an instance of the marketplace contract
-      const MarketplaceContract = new Contract(
-        MARKETPLACE_ADDRESS,
-        MarketplaceABI,
-        signer
-      )
+  // Function to call `createListing` in the marketplace contract
+  async function createListing() {
+    // Initialize an instance of the marketplace contract
+    const MarketplaceContract = new Contract(
+      MARKETPLACE_ADDRESS,
+      MarketplaceABI,
+      signer
+    )
 
-      // Send the create listing transaction
-      const createListingTxn = await MarketplaceContract.createListing(
-        nftAddress,
-        tokenId,
-        parseEther(price)
-      )
+    // Send the create listing transaction
+    const createListingTxn = await MarketplaceContract.createListing(
+      nftAddress,
+      tokenId,
+      parseEther(price)
+    )
 
-      await createListingTxn.wait()
-    }
+    await createListingTxn.wait()
   }
 
   return (
@@ -108,19 +108,19 @@ export default function Create() {
           value={nftAddress}
           onChange={(e) => setNftAddress(e.target.value)}
         />
-        <input 
+        <input
           type="text"
           placeholder="Token ID"
           value={tokenId}
           onChange={(e) => setTokenId(e.target.value)}
         />
-        <input 
+        <input
           type="text"
           placeholder="Price (in CELO)"
           value={price}
-          onChange={() => {
-            if (e.target.value === "") {
-              setPrice("0")
+          onChange={(e) => {
+            if (e.target.value === '') {
+              setPrice('0')
             } else {
               setPrice(e.target.value)
             }
@@ -128,7 +128,7 @@ export default function Create() {
         />
         {/* Button to create the listing */}
         <button onClick={handleCreateListing} disabled={loading}>
-          {loading ? "Loading..." : "Create"}
+          {loading ? 'Loading...' : 'Create'}
         </button>
 
         {/* Button to take user to the NFT details page after listing is created */}

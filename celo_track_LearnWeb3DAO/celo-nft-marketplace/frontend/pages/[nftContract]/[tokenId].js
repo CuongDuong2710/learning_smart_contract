@@ -148,4 +148,37 @@ export default function NFTDetails {
       )
     }
   }, [router, signer])
+
+  return (
+    <>
+      <Navbar />
+      <div>
+        {loading ? (
+          <span>Loading...</span>
+        ) : (
+          <div className={styles.container}>
+            <div className={styles.details}>
+              <img src={imageURI} />
+              <span>
+                <b>
+                  {name} - #{tokenId}
+                </b>
+              </span>
+              <span>Price: {formatEther(listing.price)} CELO</span>
+              <span>
+                <a href={`https://alfajores.celoscan.io/address/${listing.seller}`}
+                target="_blank">
+                  Seller: {" "}
+                  {isOwner ? "You" : listing.seller.substring(0, 6) + "..."}
+                </a>
+              </span>
+              <span>Status: {listing.buyer === null ? "Active" : "Sold"}</span>
+            </div>
+
+            
+          </div>
+        )}
+      </div>
+    </>
+  )
 }
