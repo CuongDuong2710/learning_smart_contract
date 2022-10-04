@@ -1,15 +1,15 @@
-import { Contract } from "ethers";
-import { formatEther, parseEther } from "ethers/lib/utils";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { createClient } from "urql";
-import { useContract, useSigner, erc721ABI } from "wagmi";
-import MarketplaceABI from "../../abis/NFTMarketplace.json";
-import Navbar from "../../components/Navbar";
-import { MARKETPLACE_ADDRESS, SUBGRAPH_URL } from "../../constants";
-import styles from "../../styles/Details.module.css";
+import { Contract } from 'ethers'
+import { formatEther, parseEther } from 'ethers/lib/utils'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { createClient } from 'urql'
+import { useContract, useSigner, erc721ABI } from 'wagmi'
+import MarketplaceABI from '../../abis/NFTMarketplace.json'
+import Navbar from '../../components/Navbar'
+import { MARKETPLACE_ADDRESS, SUBGRAPH_URL } from '../../constants'
+import styles from '../../styles/Details.module.css'
 
-export default function NFTDetails {
+export default function NFTDetails() {
   // Extract NFT contract address and Token ID from URL
   const router = useRouter()
   const nftAddress = router.query.nftContract
@@ -17,27 +17,27 @@ export default function NFTDetails {
 
   // State variables to contain NFT and listing information
   const [listing, setListing] = useState()
-  const [name, setName] = useState("")
-  const [imageURI, setImageURI] = useState("")
+  const [name, setName] = useState('')
+  const [imageURI, setImageURI] = useState('')
   const [isOwner, setIsOwner] = useState(false)
   const [isActive, setIsActive] = useState(false)
 
   // State variable to contain new price if updating listing
-  const [newPrice, setNewPrice] = useState("")
+  const [newPrice, setNewPrice] = useState('')
 
   // State variables to contain various loading states
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
-  const [canceling, setCanceling] = useState(false);
-  const [buying, setBuying] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [updating, setUpdating] = useState(false)
+  const [canceling, setCanceling] = useState(false)
+  const [buying, setBuying] = useState(false)
 
   // Fetch signer from wagmi
-  const { data: signer } = useSigner();
+  const { data: signer } = useSigner()
 
   const MarketplaceContract = useContract({
     addressOrName: MARKETPLACE_ADDRESS,
     contractInterface: MarketplaceABI,
-    signerOrProvider: signer
+    signerOrProvider: signer,
   })
 
   async function fetchListing() {
@@ -55,7 +55,7 @@ export default function NFTDetails {
           buyer
         }
       }
-    `;
+    `
 
     const urqlClient = createClient({ url: SUBGRAPH_URL })
 
@@ -66,8 +66,8 @@ export default function NFTDetails {
     // If no active listing is found with the given parameters,
     // inform user of the error, then redirect to homepage
     if (listingEntities.length === 0) {
-      window.alert("Listing does not exist or has been canceled")
-      return router.push("/")
+      window.alert('Listing does not exist or has been canceled')
+      return router.push('/')
     }
 
     // Grab the first listing - which should be the only one matching the parameters
@@ -86,13 +86,13 @@ export default function NFTDetails {
   async function fetchNFTDetails() {
     const ERC721Contract = new Contract(nftAddress, erc721ABI, signer)
     let tokenURI = await ERC721Contract.tokenURI(tokenId)
-    tokenURI =tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/")
+    tokenURI = tokenURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
 
     const metadata = await fetch(tokenURI)
     const metadataJSON = await metadata.json()
 
     let image = metadataJSON.imageUrl
-    image = image.replace("ipfs://", "https://ipfs.io/ipfs/")
+    image = image.replace('ipfs://', 'https://ipfs.io/ipfs/')
 
     setName(metadataJSON.name)
     setImageURI(image)
@@ -119,9 +119,9 @@ export default function NFTDetails {
       tokenId
     )
     await cancelListing.wait()
-    window.alert("Listing canceled")
+    window.alert('Listing canceled')
 
-    await router.push("/")
+    await router.push('/')
     setCanceling(false)
   }
 
@@ -132,7 +132,7 @@ export default function NFTDetails {
       nftAddress,
       tokenId,
       {
-        value: listing.price
+        value: listing.price,
       }
     )
     await buyTxn.wait()
@@ -143,7 +143,7 @@ export default function NFTDetails {
   // Load listing and NFT data on page load
   useEffect(() => {
     if (router.query.nftContract && router.query.tokenId && signer) {
-      Promise.all([fetchListing(), fetchNFTDetails()]).finally(() => 
+      Promise.all([fetchListing(), fetchNFTDetails()]).finally(() =>
         setLoading(false)
       )
     }
@@ -166,16 +166,69 @@ export default function NFTDetails {
               </span>
               <span>Price: {formatEther(listing.price)} CELO</span>
               <span>
-                <a href={`https://alfajores.celoscan.io/address/${listing.seller}`}
-                target="_blank">
-                  Seller: {" "}
-                  {isOwner ? "You" : listing.seller.substring(0, 6) + "..."}
+                <a
+                  href={`https://alfajores.celoscan.io/address/${listing.seller}`}
+                  target="_blank"
+                >
+                  Seller:{' '}
+                  {isOwner ? 'You' : listing.seller.substring(0, 6) + '...'}
                 </a>
               </span>
-              <span>Status: {listing.buyer === null ? "Active" : "Sold"}</span>
+              <span>Status: {listing.buyer === null ? 'Active' : 'Sold'}</span>
             </div>
 
-            
+            <div className={styles.options}>
+              {!isActive && (
+                <span>
+                  Listing has been sold to{' '}
+                  <a
+                    href={`https://alfajores.celoscan.io/address/${listing.buyer}`}
+                    target="_blank"
+                  >
+                    {listing.buyer}
+                  </a>
+                </span>
+              )}
+
+              {isOwner && isActive && (
+                <>
+                  <div className={styles.updateListing}>
+                    <input type="text" placeholder="New Price (in CELO)">
+                      value={newPrice}
+                      onChange=
+                      {(e) => {
+                        if (e.target.value === '') {
+                          setNewPrice('0')
+                        } else {
+                          setNewPrice(e.target.value)
+                        }
+                      }}
+                    </input>
+                    <button disabled={updating} onClick={updateListing}>
+                      Update Listing
+                    </button>
+                  </div>
+
+                  <button
+                    className={styles.btn}
+                    disable={canceling}
+                    onClick={cancelListing}
+                  >
+                    Cancel Listing
+                  </button>
+                </>
+              )}
+
+              {!isOwner && isActive && (
+                <button
+                  className={styles.btn}
+                  disable={buying}
+                  onClick={buyListing}
+                >
+                  Buy Listing
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
