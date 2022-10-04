@@ -125,3 +125,11 @@ Queries (HTTP):     https://api.thegraph.com/subgraphs/name/cuongduong2710/celo-
 
 ✨  Done in 11.57s.
 ```
+
+## Install Graphql FrontEnd
+
+To get started with querying the subgraph, let's install the requisite libraries which will help us make GraphQL queries. Run the following in your terminal, while pointing to the frontend directory
+
+```sh
+npm install urql graphql
+```
