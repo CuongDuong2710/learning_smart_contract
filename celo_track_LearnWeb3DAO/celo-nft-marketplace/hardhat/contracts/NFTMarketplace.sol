@@ -68,6 +68,7 @@ contract NFTMarketplace {
         isNotListed(nftAddress, tokenId)
         isNFTOwner(nftAddress, tokenId)
     {
+        // Cannot create a listing to sell NFT for < 0 ETH
         require(price > 0, "MRKT: Price must be > 0");
 
         IERC721 nftContract = IERC721(nftAddress);
