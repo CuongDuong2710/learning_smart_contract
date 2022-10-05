@@ -6,7 +6,11 @@ In the Junior Track, we gave a brief introduction about the Flow blockchain in t
 
 Are you excited? 🚀
 
-<Quiz questionId="94842a40-cad4-4ed0-93bb-b455d630775c" />
+```sh
+🤔 Flow is what kind of blockchain?
+
+Layer 1
+```
 
 ## What is Flow?
 
@@ -16,7 +20,11 @@ The Flow blockchain is built by Dapper Labs, the company behind CryptoKitties, t
 
 By not depending on sharding, Flow provides a more developer-friendly and validator-friendly environment to build on or run nodes for Flow.
 
-<Quiz questionId="0ca62d1a-2930-4278-8aa6-95902452b824" />
+```sh
+🤔 Flow is designed to be highly scalable without the need for ____ technology
+
+Sharding
+```
 
 ## Pipelining ⚒
 
@@ -31,7 +39,11 @@ In the physical world, this type of approach is rarely seen. In fact, one of the
 
 In modern CPUs as well, pipelining is a common strategy to let your CPU perform faster. Instead of processing each task one by one, pipelining separates concerns and increases parallelism that results in an increase in speed.
 
-<Quiz questionId="49578c00-a292-451d-8c4e-8b8477ab8541" />
+```sh
+🤔 Pipelining is best described as
+
+Letting multiple tasks run in parallel across distinct phases
+```
 
 ---
 
@@ -66,10 +78,17 @@ This allows Flow to scale greatly, while maintaining a shared execution environm
 
 **Verification Nodes** are used to keep the execution nodes in check, and make sure that they are not attempting to do any fraudulent transactions.
 
-<Quiz questionId="ea815c48-beac-465f-a77c-35d29fd5f5dd" />
+```sh
+🤔 What are the four phases Flow split the miner/validator role into?
 
-<Quiz questionId="ae181a3f-a955-4da6-a3c9-745db43a93f0" />
+Collection - Consensus - Execution - Verification
+```
 
+```sh
+🤔 What are execution nodes used for?
+
+Performing computation for each transaction
+```
 
 ## Cadence 🤯
 
@@ -77,7 +96,11 @@ Arguably an even more important aspect of Flow is the programming language used 
 
 Throughout this track, we will delve much deeper into Cadence, and explore what it means to be resource-oriented through programming levels.
 
-<Quiz questionId="21c87557-84ac-4160-9596-d2fec6357cad" />
+```sh
+🤔 What is the name of Flow's smart contract programming language?
+
+Cadence
+```
 
 ## Upgradeable Contracts
 
@@ -106,6 +129,10 @@ The official UFC licensed metaverse experience, also built on the Flow blockchai
 
 Many more... View the full list on [Flowverse](https://www.flowverse.co/)
 
-<Quiz questionId="df3a5cd3-ef1c-4e70-b0dd-b3261e43b008" />
+```sh
+🤔 Which of these popular projects is NOT built on Flow?
+
+Dogecoin
+```
 
 <SubmitQuiz />
