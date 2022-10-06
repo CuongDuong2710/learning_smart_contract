@@ -16,7 +16,11 @@ The main thing to remember in Flow is that both Transactions and Scripts are wri
 
 We will clear this up with examples as we proceed.
 
-<Quiz questionId="79fbb5ab-7f0e-48cf-8904-df008fc1920e" />
+```sh
+🤔 Function calls to smart contracts on the Flow blockchain can be done via?
+
+- Cadence Transactions and Scripts
+```
 
 ## 👨‍💻 Flow Playground
 
@@ -34,7 +38,11 @@ Right below that, we also have the option of creating new Transactions and new S
 
 And right in the middle we see we get an option to customize our project details. We'll skip this for now.
 
-<Quiz questionId="5e1ec2d2-30de-4c4e-82ba-73584d47b8d0" />
+```sh
+🤔 The Flow Playground is most analogous to what technology?
+
+- Remix IDE
+```
 
 ## 👨‍💻 Cadence Code
 
@@ -77,7 +85,11 @@ access(all) contract HelloWorld {
 
 The `pub contract ContractName` will always be necessary no matter what smart contract you're writing.
 
-<Quiz questionId="f0c37a92-c310-4118-b730-62e6072c3906" />
+```sh
+🤔 What is the correct syntax to declare a new contract in Cadence?
+
+- pub contract ContractName
+```
 
 ### The Variable Declarations
 
@@ -105,7 +117,11 @@ In this case, we are setting the initial value of the `greeting` variable.
 
 This is similar to a constructor, as it is only run once when the contract is initially deployed.
 
-<Quiz questionId="b83635fe-32df-4313-91c8-696c12f8043a" />
+```sh
+🤔 An initializer is required if..
+
+- If the contract has any variables
+```
 
 ### The Functions
 
