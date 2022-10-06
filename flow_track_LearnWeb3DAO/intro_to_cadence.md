@@ -134,7 +134,11 @@ access(all) fun hello(): String {
 
 This is a super simple function, a public function named `hello` that returns a String. It just returns `self.greeting`, which is our `greeting` variable we declared above. If we call this function, we will get `"Hello, World!"` since we did not change the variable's value.
 
-<Quiz questionId="4b26da20-426c-43c1-834c-0a8d90700ee6" />
+```sh
+🤔 What is the difference between access(all) and pub?
+
+- There is no difference
+```
 
 ## 🚀 Deploying
 
@@ -142,7 +146,11 @@ To deploy our smart contracts in the Flow playground, just click the shiny green
 
 Once the contract is deployed, you will see some logs in the console at the bottom of the page, and also notice that the account `0x01` now has a name attached to it - this is the name of the contract. In our case, it should be `HelloWorld`.
 
-<Quiz questionId="8f859861-da6c-4de9-a219-dd15a1f7693c" />
+```sh
+🤔 Smart Contracts on Flow are deployed to:
+
+- To a pre-existing account
+```
 
 ## ✍️ Scripting
 
@@ -182,7 +190,11 @@ pub fun main(): String {
 }
 ```
 
-<Quiz questionId="d4d4c599-87f6-4579-be7f-e407d092f18b" />
+```sh
+🤔 Scripts in Cadence behave like...
+
+- View functions on Ethereum
+```
 
 ### Executing our Script
 
@@ -242,7 +254,11 @@ Let's update the declaration of our greeting variable to be as follows:
 + pub var greeting: String
 ```
 
-<Quiz questionId="4799a6f4-c707-4bdd-9c42-ed11e2409a30" />
+```sh
+🤔 How do you declare a mutable variable in Cadence?
+
+- Using the var keyword
+```
 
 We also changed `access(all)` to `pub` while we were at it, but that has nothing to do with `let` or `var`.
 
@@ -338,5 +354,3 @@ In future lessons, as we keep building, we will learn about more advanced data t
 We will also learn about resources, the most important feature of Cadence, and how resources can be stored within account storage.
 
 Until then, have a great day, hope you're enjoying it so far! ❤️
-
-<SubmitQuiz />
