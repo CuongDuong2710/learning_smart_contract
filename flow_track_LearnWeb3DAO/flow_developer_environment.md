@@ -1,4 +1,4 @@
-# Setting up FLOW Developer Environment Locally
+# [Setting up FLOW Developer Environment Locally](https://learnweb3.io/courses/18f86037-e600-4933-aa8e-375f26055d53/lessons/a4045db3-b5d0-4bfe-925f-f19164725fd0)
 
 ![](https://i.imgur.com/5x4A9Un.png)
 
