@@ -1,4 +1,6 @@
-# Cadence - Build a task tracker
+# [Cadence - Build a task tracker](https://learnweb3.io/courses/18f86037-e600-4933-aa8e-375f26055d53/lessons/a944b83b-48c0-404b-9a39-97e87e928434)
+
+[Link Flow Playground Todo](https://play.onflow.org/b123337e-7918-4b28-b046-6a13065ebd45?type=account&id=3e85840c-1c89-4b44-be6f-18400740d708&storage=none)
 
 In this level, we will dig a bit deeper into Cadence, and learn about Arrays, Resources, and Account Storage. Resources are probably the most important feature of Cadence, and we will see what unique things they allow, and also how to use resources properly.
 
@@ -316,7 +318,3 @@ Today, we learnt about Resources, Arrays, Account Storage, and various ways of r
 ---
 
 To verify this level, please copy your Flow Playground link with the Project ID included and enter it into the box below. Select `Flow Playground` as the network.
-
-> Link Playground Todo
-
-https://play.onflow.org/b123337e-7918-4b28-b046-6a13065ebd45?type=account&id=3e85840c-1c89-4b44-be6f-18400740d708&storage=none
