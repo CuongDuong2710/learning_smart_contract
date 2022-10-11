@@ -1,4 +1,4 @@
-# Ship your own name service on FLOW - Part 1 - Smart Contracts
+# [Ship your own name service on FLOW - Part 1 - Smart Contracts](https://learnweb3.io/courses/18f86037-e600-4933-aa8e-375f26055d53/lessons/93c5c738-d0a0-42db-abf3-981f52970099)
 
 ![](https://i.imgflip.com/6okk6u.jpg)
 
