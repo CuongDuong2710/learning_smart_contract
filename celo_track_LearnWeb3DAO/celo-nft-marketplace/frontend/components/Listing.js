@@ -43,7 +43,7 @@ export default function Listing(props) {
       // Update state variables
       setName(metadataJSON.name)
       setImageURI(image)
-      setLoading(true)
+      setLoading(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
