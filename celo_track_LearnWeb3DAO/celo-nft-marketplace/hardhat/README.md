@@ -46,6 +46,9 @@ npx hardhat run scripts/deploy.js --network alfajores
 Celo NFT deployed to: 0x2f4016FBD38e9e2E54043154F04995bD13CE7db2
 NFT Marketplace deployed to: 0x0e34AF070FaB2ADB7feEE3B11509351bD0D369D2
 
+Celo NFT deployed to: 0x1a6CED04C19E0785Cb2815438171F728C865097f
+NFT Marketplace deployed to: 0xA935B95D56Ab08684696c802Fc314BD6CB174103
+
 ## The Graph
 
 > graph codegen
@@ -132,4 +135,21 @@ To get started with querying the subgraph, let's install the requisite libraries
 
 ```sh
 npm install urql graphql
+```
+
+## Error
+
+```sh
+MetaMask - RPC Error: Internal JSON-RPC error
+
+Error: missing revert data in call exception; Transaction reverted without a reason string
+```
+
+https://stackoverflow.com/questions/70580881/metamask-rpc-error-internal-json-rpc-error
+
+- In `require()` send do not enough funds
+
+```sh
+// Cannot create a listing to sell NFT for < 0 ETH
+require(price > 0, "MRKT: Price must be > 0");
 ```
