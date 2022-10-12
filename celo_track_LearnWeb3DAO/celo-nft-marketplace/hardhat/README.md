@@ -153,3 +153,10 @@ https://stackoverflow.com/questions/70580881/metamask-rpc-error-internal-json-rp
 // Cannot create a listing to sell NFT for < 0 ETH
 require(price > 0, "MRKT: Price must be > 0");
 ```
+
+```sh
+Transaction of wallet address
+
+https://alfajores.celoscan.io/address/0x0c395ca82d6a7e4f03107c4d52f0701671cb607d
+https://explorer.celo.org/alfajores/address/0x0C395Ca82D6a7E4f03107c4d52f0701671CB607D/transactions
+```

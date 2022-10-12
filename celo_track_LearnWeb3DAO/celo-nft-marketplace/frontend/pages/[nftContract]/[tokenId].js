@@ -193,7 +193,7 @@ export default function NFTDetails() {
               {isOwner && isActive && (
                 <>
                   <div className={styles.updateListing}>
-                    <input type="text" placeholder="New Price (in CELO)">
+                    <input type="text" placeholder="New Price (in CELO)"
                       value={newPrice}
                       onChange=
                       {(e) => {
@@ -203,7 +203,7 @@ export default function NFTDetails() {
                           setNewPrice(e.target.value)
                         }
                       }}
-                    </input>
+                    ></input>
                     <button disabled={updating} onClick={updateListing}>
                       Update Listing
                     </button>
@@ -211,7 +211,7 @@ export default function NFTDetails() {
 
                   <button
                     className={styles.btn}
-                    disable={canceling}
+                    disabled={canceling}
                     onClick={cancelListing}
                   >
                     Cancel Listing
@@ -222,7 +222,7 @@ export default function NFTDetails() {
               {!isOwner && isActive && (
                 <button
                   className={styles.btn}
-                  disable={buying}
+                  disabled={buying}
                   onClick={buyListing}
                 >
                   Buy Listing

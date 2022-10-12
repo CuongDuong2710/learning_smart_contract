@@ -1,4 +1,4 @@
-require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-waffle");
 
 // Initialize `dotenv` with the `.config()` function
 require("dotenv").config({ path: ".env" });
@@ -16,8 +16,6 @@ if (!PRIVATE_KEY) {
 if (!RPC_URL) {
   console.error("Missing RPC_URL environment variable");
 }
-
-/** @type import('hardhat/config').HardhatUserConfig */
 
 // Add the alfajores network to the configuration
 module.exports = {
