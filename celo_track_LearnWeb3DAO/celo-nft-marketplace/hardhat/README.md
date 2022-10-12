@@ -160,3 +160,9 @@ Transaction of wallet address
 https://alfajores.celoscan.io/address/0x0c395ca82d6a7e4f03107c4d52f0701671cb607d
 https://explorer.celo.org/alfajores/address/0x0C395Ca82D6a7E4f03107c4d52f0701671CB607D/transactions
 ```
+
+```sh
+Link IPFS
+
+https://ipfs.io/ipfs/QmTy8w65yBXgyfG2ZBg5TrfB2hPjrDQH3RCQFJGkARStJb
+```
