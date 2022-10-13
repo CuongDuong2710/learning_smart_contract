@@ -21,6 +21,7 @@ export default function Create() {
 
   // Main function to be called when 'Create' button is clicked
   async function handleCreateListing() {
+    console.log(`handleCreateListing()`)
     // Set loading status to true
     setLoading(true)
 
@@ -47,14 +48,19 @@ export default function Create() {
 
   // Function to check if NFT approval is required
   async function requestApproval() {
+    console.log(`requestApproval()`)
     // Get signer's address
     const address = await signer.getAddress()
+    console.log(`address: ${address}`)
 
     // Initialize a contract instance for the NFT contract
     const ERC721Contract = new Contract(nftAddress, erc721ABI, signer)
+    //console.log(`ERC721Contract: ${JSON.stringify(ERC721Contract)}`)
 
-    // Make sure user is owner of the NFT in question
+    // Make sure user is owner of the NFT in question popup in Metamask
+    console.log(`tokenId: ${tokenId}`)
     const tokenOwner = await ERC721Contract.ownerOf(tokenId)
+    console.log(`tokenOwner: ${tokenOwner}`)
     if (tokenOwner.toLowerCase() !== address.toLowerCase()) {
       throw new Error(`You do not own this NFT`)
     }
@@ -63,7 +69,8 @@ export default function Create() {
     const isApproved = await ERC721Contract.isApprovedForAll(
       address,
       MARKETPLACE_ADDRESS
-    )
+    );
+    console.log(`isApproved: ${isApproved}`)
 
     // If not approved
     if (!isApproved) {
@@ -73,19 +80,22 @@ export default function Create() {
       const approvalTxn = await ERC721Contract.setApprovalForAll(
         MARKETPLACE_ADDRESS,
         true
-      )
+      );
+      console.log(`approvalTxn: ${approvalTxn}`)
       await approvalTxn.wait()
     }
   }
 
   // Function to call `createListing` in the marketplace contract
   async function createListing() {
+    console.log(`createListing:`)
     // Initialize an instance of the marketplace contract
     const MarketplaceContract = new Contract(
       MARKETPLACE_ADDRESS,
       MarketplaceABI,
       signer
     )
+    console.log(`MarketplaceContract: ${MarketplaceContract}`)
 
     // Send the create listing transaction
     const createListingTxn = await MarketplaceContract.createListing(
@@ -93,14 +103,16 @@ export default function Create() {
       tokenId,
       parseEther(price)
     )
-
-    await createListingTxn.wait()
+    console.log(`createListingTxn: ${createListingTxn}`)
+    await createListingTxn.wait();
   }
 
   return (
     <>
+      {/* Show the navigation bar */}
       <Navbar />
 
+      {/* Show the input fields for the user to enter contract details */}
       <div className={styles.container}>
         <input
           type="text"
