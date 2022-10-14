@@ -5,7 +5,19 @@ import FlowToken from "./tokens/FlowToken.cdc"
 // The Domains contract defines the Domains NFT Collection
 // to be used by flow-name-service
 pub contract Domains: NonFungibleToken {
-  
+  // This dictionaries (mappings) to store information about all domain owners and the expiry times.
+  // The key (String) will be the domain's nameHash, and the values will represent the owner address and expiry time respectively.
+  pub let owners: {String: Address}
+  pub let expirationTimes: {String: UFix64}
+
+  init() {
+    self.owners = {}
+    self.expirationTimes = {}
+  }
+
+  pub event DomainBioChanged(nameHash: String, bio: String)
+  pub event DomainAddressChanged(nameHash: String, address: Address)
+
   // Struct that represents information about an FNS domain
   pub struct DomainInfo {
     // Public Variables of the Struct
@@ -90,5 +102,49 @@ pub contract Domains: NonFungibleToken {
     pub fun getDomainName(): String {
       return self.name.concat(".fns")
     }
+  }
+
+  // Checks if a domain is available for sale
+  pub fun isAvailable(nameHash: String): Bool {
+    if self.owners[nameHash] == nil {
+      return true
+    }
+    return self.isExpired(nameHash: nameHash)
+  }
+
+  // Returns the expiry time for a domain
+  pub fun getExpirationTime(nameHash: String): UFix64? {
+    return  self.expirationTimes[nameHash]
+  }
+
+  // Checks if a domain is expired
+  pub fun isExpired(nameHash: String): Bool {
+    let currTime = getCurrentBlock().timestamp
+    let expTime = self.expirationTimes[nameHash]
+    if expTime != nil {
+      return currTime >= expTime!
+    }
+    return false
+  }
+
+  // Returns the entire `owners` dictionary
+  pub fun getAllOwners(): {String: Address} {
+    return self.owners
+  }
+
+  // Returns the entire `expirationTimes` dictionary
+  pub fun getAllExpirationTimes(): {String: UFix64} {
+    return self.expirationTimes
+  }
+
+  // access(account) allows the account to access the function/variable - which includes the code itself as well.
+  // Update the owner of a domain
+  access(account) fun updateOwner(nameHash: String, address: Address) {
+    self.owners[nameHash] = address
+  }
+
+  // Update the expiration time of a domain
+  access(account) fun updateExpirationTime(nameHash: String, expTime: UFix64) {
+    self.expirationTimes[nameHash] = expTime
   }
 }
