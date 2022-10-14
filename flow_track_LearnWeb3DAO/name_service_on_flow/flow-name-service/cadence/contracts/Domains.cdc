@@ -38,7 +38,7 @@ pub contract Domains: NonFungibleToken {
       nameHash: String,
       expiresAt: UFix64,
       address: Address?,
-      let bio: String,
+      bio: String,
       createAt: UFix64
     ) {
       self.id = id
@@ -101,6 +101,40 @@ pub contract Domains: NonFungibleToken {
 
     pub fun getDomainName(): String {
       return self.name.concat(".fns")
+    }
+
+    pub fun setBio(bio: String) {
+      // This is like a `require` statement in Solidity
+      // A 'pre'-check to running this function
+      // If the condition is not valid, it will throw the given error
+      pre {
+        Domains.isExpired(nameHash: self.nameHash) == false : "Domain is expired"
+      }
+      self.bio = bio
+      emit DomainBioChanged(nameHash: self.nameHash, bio: bio)
+    }
+
+    pub fun setAddress(addr: Address) {
+      pre {
+        Domains.isExpired(nameHash: self.nameHash) == false : "Doamin is expired"
+      }
+      self.address = addr
+      emit DomainAddressChanged(nameHash: self.nameHash, address: addr)
+    }
+
+    pub fun getInfo(): DomainInfo {
+      let owner = Domains.owners[self.nameHash]!
+
+      return DomainInfo(
+        id: self.id,
+        owner: owner,
+        name: self.getDomainName(),
+        nameHash: self.nameHash,
+        expiresAt: Domains.expirationTimes[self.nameHash]!,
+        address: self.address,
+        bio: self.bio,
+        createAt: self.createAt
+      )
     }
   }
 
