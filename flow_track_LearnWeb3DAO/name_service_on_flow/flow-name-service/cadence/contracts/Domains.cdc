@@ -17,6 +17,8 @@ pub contract Domains: NonFungibleToken {
 
   pub event DomainBioChanged(nameHash: String, bio: String)
   pub event DomainAddressChanged(nameHash: String, address: Address)
+  pub event Withdraw(id: UInt64, from: Address?)
+  pub event Deposit(id: UInt64, to: Address?)
 
   // Struct that represents information about an FNS domain
   pub struct DomainInfo {
@@ -67,7 +69,7 @@ pub contract Domains: NonFungibleToken {
   //  We don't want any third-party to have access to functions
   pub resource interface DomainPrivate {
     pub fun setBio(bio: String)
-    pub fun setAddress(addr: String)
+    pub fun setAddress(addr: Address)
   }
 
   pub resource NFT: DomainPublic, DomainPrivate, NonFungibleToken.INFT {
@@ -180,5 +182,38 @@ pub contract Domains: NonFungibleToken {
   // Update the expiration time of a domain
   access(account) fun updateExpirationTime(nameHash: String, expTime: UFix64) {
     self.expirationTimes[nameHash] = expTime
+  }
+
+  // We will only let third-parties borrow a reference to the DomainPublic interface so they don't have access to functions present within DomainPrivate.
+  pub resource interface CollectionPublic {
+    pub fun borrowDomain(id: UInt64): &{Domains.DomainPublic}
+  }
+
+  pub resource interface CollectionPrivate {
+    // `access(account)` even though it's part of CollectionPrivate, it can only be used by the account of the smart contract, which essentially makes it an admin/owner function.
+    // mintDomain will be used by the Registrar resource, then transfers the domain into the receiver which is passed as an argument.
+    access(account) fun mintDomain(name: String, nameHash: String, expiresAt: UFix64, receiver: Capability<&{NonFungibleToken.Receiver}>)
+    // This is pretty similar to `borrowDomain` as in the public collection, except it returns a reference to the full NFT i.e. both it's public and private parts.
+    pub fun borrowDomainPrivate(id: UInt64): &Domains.NFT
+  }
+
+  pub resource Collection: CollectionPublic, CollectionPrivate, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+    // Dictionary (mapping) of Token ID -> NFT Resource 
+    pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
+
+    init() {
+      // Initialize as an empty resource
+      self.ownedNFTs <- {}
+    }
+
+    // NonFungibleToken.Provider
+    pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
+      // first tries to move the NFT resource (the domain) out of the dictionary.
+      let domain <- self.ownedNFTs.remove(key: withdrawID)
+        ?? panic("NFT not found in collection")
+      
+      emit Withdraw(id: domain.id, from: self.owner?.address)
+      return <- domain // returns the resource to the caller
+    }
   }
 }
