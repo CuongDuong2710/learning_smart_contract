@@ -132,3 +132,8 @@ In the same terminal also install `ethers.js`
 npm install ethers
 ```
 
+---
+
+## Sources
+
+[DeFi Hacks Analysis - Root Cause](https://wooded-meter-1d8.notion.site/0e85e02c5ed34df3855ea9f3ca40f53b?v=22e5e2c506ef4caeb40b4f78e23517ee&p=6c30f71c9c4b456b8d2746f17536393e&pm=s)
