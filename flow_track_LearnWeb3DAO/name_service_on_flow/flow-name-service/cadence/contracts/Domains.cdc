@@ -215,5 +215,53 @@ pub contract Domains: NonFungibleToken {
       emit Withdraw(id: domain.id, from: self.owner?.address)
       return <- domain // returns the resource to the caller
     }
+
+    // NonFungibleToken.Receiver
+    pub fun deposit(token: @NonFungibleToken.NFT):  {
+      // Typecast the generic NFT resource as a Domains.NFT resource
+      let domain <- token as! @Domains.NFT
+      let id = domain.id
+      let nameHash = domain.nameHash
+
+      if Domains.isExpired(nameHash: nameHash) {
+        panic("Domain is expired")
+      }
+
+      Domains.updateOwner(nameHash: nameHash, address: self.owner?.address)
+
+      // First, we move the existing NFT resource (likely nil) out of our dictionary
+      // Second, move the new resource domain into the dictionary at that id
+      let oldToken <- self.ownedNFTs[id] <- domain
+      emit Deposit(id: id, to: self.owner?.address)
+
+      destroy oldToken
+    }
+    
+    // NonFungibleToken.CollectionPublic
+    // getIDs() returns all the Token IDs present in ownedNFTs.
+    pub fun getIDs(): [UInt64] {
+      // Ah, the joy of being able to return keys which are set
+      // in a mapping. Solidity made me forget this was doable.
+      return self.ownedNFTs.keys
+    }
+
+    // borrowNFT is a generic borrow function required by the NFT standard.
+    pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
+      return (&self.ownedNFTs[id] as &NonFungibleToken.NFT?)!
+    }
+
+    // Domains.CollectionPublic
+    pub fun borrowDomain(id: UInt64): &{Domains.DomainPublic} {
+      pre {
+        self.ownedNFTs[id] != nil : "Domain does not exist"
+      }
+
+      let token = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
+      return token as! &Domains.NFT
+    }
+
+    // Domains.CollectionPrivate
+    
+
   }
 }
