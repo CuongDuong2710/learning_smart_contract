@@ -155,3 +155,5 @@ npm install ethers
 [Web3 Magazine](https://medium.com/web3-magazine)
 
 [Blockchain Roadmap](https://roadmap.sh/blockchain)
+
+[Web3 University](https://www.web3.university/)
