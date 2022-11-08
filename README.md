@@ -151,3 +151,5 @@ npm install ethers
 [Smart Contract Engineer](https://www.smartcontract.engineer/)
 
 [Open Zeppelin](https://docs.openzeppelin.com/)
+
+[Web3 Magazine](https://medium.com/web3-magazine)
