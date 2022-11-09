@@ -21,3 +21,5 @@
 [Blockchain Roadmap](https://roadmap.sh/blockchain)
 
 [Web3 University](https://www.web3.university/)
+
+[Ethereum Book](https://github.com/ethereumbook/ethereumbook)
