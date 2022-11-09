@@ -27,3 +27,5 @@
 [Blockchain Learning path](https://github.com/protofire/blockchain-learning-path)
 
 [Blockchain Developer Hub](https://github.com/smartcontractkit/blockchain-developer-hub)
+
+[Layer2 Fees](https://l2fees.info/)
