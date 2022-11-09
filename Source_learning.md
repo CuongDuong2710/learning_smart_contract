@@ -25,3 +25,5 @@
 [Ethereum Book](https://github.com/ethereumbook/ethereumbook)
 
 [Blockchain Learning path](https://github.com/protofire/blockchain-learning-path)
+
+[Blockchain Developer Hub](https://github.com/smartcontractkit/blockchain-developer-hub)
