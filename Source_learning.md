@@ -23,3 +23,5 @@
 [Web3 University](https://www.web3.university/)
 
 [Ethereum Book](https://github.com/ethereumbook/ethereumbook)
+
+[Blockchain Learning path](https://github.com/protofire/blockchain-learning-path)
