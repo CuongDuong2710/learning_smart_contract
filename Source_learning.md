@@ -29,3 +29,5 @@
 [Blockchain Developer Hub](https://github.com/smartcontractkit/blockchain-developer-hub)
 
 [Layer2 Fees](https://l2fees.info/)
+
+[Smart Contract Auditing Mindmap](https://raw.githubusercontent.com/Quillhash/Smart-contract-Auditing-Methodology-mindmap/main/data/mindmap.png)
