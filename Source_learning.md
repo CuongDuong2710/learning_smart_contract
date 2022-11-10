@@ -31,3 +31,5 @@
 [Layer2 Fees](https://l2fees.info/)
 
 [Smart Contract Auditing Mindmap](https://raw.githubusercontent.com/Quillhash/Smart-contract-Auditing-Methodology-mindmap/main/data/mindmap.png)
+
+[Mindmap Jobs Crypto](https://media.discordapp.net/attachments/992818281637490698/1014124128632053770/unknown.png)
