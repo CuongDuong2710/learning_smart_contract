@@ -39,3 +39,5 @@
 [Crypto Dev Hub](https://cryptodevhub.io/)
 
 [OffChain Labs](https://github.com/OffchainLabs)
+
+[Layer Zero Labs](https://github.com/LayerZero-Labs)
