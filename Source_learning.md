@@ -69,3 +69,5 @@
   - [Speed Run Ethereum](https://speedrunethereum.com/)
 
   - [All about Programming](https://github.com/EQuimper/All-About-Programming)
+
+  - [35 Github Repositories](https://blog.developerdao.com/35-github-repositories-every-solidity-developer-should-bookmark)
